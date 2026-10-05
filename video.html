@@ -1289,7 +1289,7 @@
   }
   function closeFull() {
     if (modal.hidden) return;
-    special('expand');
+    special('expand', { rate: 0.78 });
     modal.hidden = true; modalBody.innerHTML = ''; document.body.classList.remove('modal-open');
     if (lastFocus) lastFocus.focus({ preventScroll: true });
   }

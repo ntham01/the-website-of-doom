@@ -201,6 +201,7 @@
     .music-page .albums { max-width: min(1100px, 100%); } .music-page .links .winbtn { font-size: 14px; padding: 5px 9px 6px; } .music-page .links { gap: 4px; } .music-page .albums .cover { width: min(100%, 188px); margin: 0 auto; } } /* short laptop screens: wider windows, smaller cover */
   .lede { margin: clamp(6px, 1.2vh, 12px) auto 0; max-width: 80ch; font-size: clamp(15px, 1.1vw, 18px); line-height: 1.4; color: var(--quiet); }
   .albums-wrap { min-height: 0; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #8b867c transparent; }
+  .albums { padding-bottom: clamp(18px, 3.4vh, 36px); } /* a little room under the last row */
   .albums { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: clamp(20px, 2.6vw, 44px); row-gap: clamp(8px, 1.6vh, 18px); align-items: start;
     max-width: min(1240px, 175vh - 560px); margin: 0 auto; padding: clamp(10px, 2vh, 24px) 6px 2px; } /* scales with screen height so all three fit */
   .albums .win { margin: 0; }
@@ -1137,7 +1138,7 @@
   }
   function closeFull() {
     if (modal.hidden) return;
-    special('expand');
+    special('expand', { rate: 0.78 });
     modal.hidden = true; modalBody.innerHTML = ''; document.body.classList.remove('modal-open');
     if (lastFocus) lastFocus.focus({ preventScroll: true });
   }

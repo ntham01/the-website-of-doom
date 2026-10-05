@@ -2385,7 +2385,7 @@
     if (e.target.closest('.song-again')) { closeSong(); vend(vm); return; }
     if (e.target.closest('.vm, .fav')) return;
     if (e.target.closest('a[href]')) { click(); return; }
-    if (e.target.closest('[data-act]') || !e.target.closest('.win')) { special('expand'); closeSong(); }
+    if (e.target.closest('[data-act]') || !e.target.closest('.win')) { special('expand', { rate: 0.78 }); closeSong(); }
   });
   addEventListener('keydown', e => { if (e.key === 'Escape') { closeSong(); closeConfirm(); } });
 

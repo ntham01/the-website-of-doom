@@ -839,7 +839,7 @@
   }
   function restore() {
     if (!expanded) return;
-    special('expand');
+    special('expand', { rate: 0.78 });
     const w = expanded; expanded = null;
     modal.hidden = true; modalBody.innerHTML = ''; document.body.classList.remove('modal-open');
     renderAll();   // the page copy picks up any cities added while expanded
