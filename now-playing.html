@@ -429,176 +429,1543 @@
      CONFIG: edit here
      ================================================================== */
 
-  // The 3 x 3 grid, in order. `label` is exactly what the hover box says; `find` is what's searched to
-  // fetch the cover from Apple's iTunes Search (on your real site). `cover` (optional) uses your own file instead.
+  // The 3 x 3 grid, in order. `label` is exactly what the hover box says; `cover` is the album's cover file.
   const FAVORITES = [
       {
           "label": "Nurture - Porter Robinson",
-          "find": "Porter Robinson Nurture"
+          "cover": "nurture.jpg"
       },
       {
           "label": "In Rainbows - Radiohead",
-          "find": "Radiohead In Rainbows"
+          "cover": "in-rainbows.jpg"
       },
       {
           "label": "だから僕は音楽を辞めた - Yorushika",
-          "find": "ヨルシカ だから僕は音楽を辞めた",
-          "cover": "https://i.scdn.co/image/ab67616d0000b273b1b3b83ffee5925197e7ef2c"
+          "cover": "dakara-boku-wa-ongaku-wo-yameta.jpg"
       },
       {
           "label": "Metaphorical Music - Nujabes",
-          "find": "Nujabes Metaphorical Music"
+          "cover": "metaphorical-music.jpg"
       },
       {
           "label": "C418 - Minecraft",
-          "find": "C418 Minecraft Volume Alpha"
+          "cover": "minecraft-volume-alpha.jpg"
       },
       {
           "label": "Your Name - Radwimps",
-          "find": "RADWIMPS Your Name"
+          "cover": "your-name.jpg"
       },
       {
           "label": "Funeral - Arcade Fire",
-          "find": "Arcade Fire Funeral"
+          "cover": "funeral.jpg"
       },
       {
           "label": "Yoshimi Battles the Pink Robots - The Flaming Lips",
-          "find": "The Flaming Lips Yoshimi Battles the Pink Robots"
+          "cover": "yoshimi-battles-the-pink-robots.jpg"
       },
       {
           "label": "Melt My Eyez See Your Future Deluxe - Denzel Curry",
-          "find": "Denzel Curry Melt My Eyez See Your Future (The Extended Edition)",
-          "cover": "https://i.scdn.co/image/ab67616d0000b273069dc0623d2e2ad7f10b6d3c"
+          "cover": "melt-my-eyez-see-your-future.jpg"
       }
   ];
 
-  // Songs the vending machine hands out (a starter set from the favourite albums until the full playlist
-  // export is added). Each: title, artist, album. Covers and the Apple Music link are looked up from
-  // iTunes Search; Spotify and YouTube Music open a search for the song.
+  // Every song the vending machine can hand out (hard-coded from the songs-and-links doc).
+  // spotify / apple / youtube: the exact link; blank opens a search for the song instead. `fav` = which album in the grid.
   const SONGS = [
+      {
+          "title": "Lifelike",
+          "artist": "Porter Robinson",
+          "album": "Nurture",
+          "fav": 0,
+          "find": "Lifelike Porter Robinson",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/lifelike/1894533113",
+          "youtube": ""
+      },
       {
           "title": "Look at the Sky",
           "artist": "Porter Robinson",
           "album": "Nurture",
-          "fav": 0
+          "fav": 0,
+          "find": "Look at the Sky Porter Robinson",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/look-at-the-sky/1894533115",
+          "youtube": ""
+      },
+      {
+          "title": "Get Your Wish",
+          "artist": "Porter Robinson",
+          "album": "Nurture",
+          "fav": 0,
+          "find": "Get Your Wish Porter Robinson",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/get-your-wish/1894533116",
+          "youtube": ""
+      },
+      {
+          "title": "Wind Tempos",
+          "artist": "Porter Robinson",
+          "album": "Nurture",
+          "fav": 0,
+          "find": "Wind Tempos Porter Robinson",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/wind-tempos/1894533117",
+          "youtube": ""
+      },
+      {
+          "title": "Musician",
+          "artist": "Porter Robinson",
+          "album": "Nurture",
+          "fav": 0,
+          "find": "Musician Porter Robinson",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/musician/1894533119",
+          "youtube": ""
+      },
+      {
+          "title": "do-re-mi-fa-so-la-ti-do",
+          "artist": "Porter Robinson",
+          "album": "Nurture",
+          "fav": 0,
+          "find": "do-re-mi-fa-so-la-ti-do Porter Robinson",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/do-re-mi-fa-so-la-ti-do/1894533122",
+          "youtube": ""
+      },
+      {
+          "title": "Mother",
+          "artist": "Porter Robinson",
+          "album": "Nurture",
+          "fav": 0,
+          "find": "Mother Porter Robinson",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/mother/1894533123",
+          "youtube": ""
+      },
+      {
+          "title": "Dullscythe",
+          "artist": "Porter Robinson",
+          "album": "Nurture",
+          "fav": 0,
+          "find": "Dullscythe Porter Robinson",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/dullscythe/1894533126",
+          "youtube": ""
+      },
+      {
+          "title": "Sweet Time",
+          "artist": "Porter Robinson",
+          "album": "Nurture",
+          "fav": 0,
+          "find": "Sweet Time Porter Robinson",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/sweet-time/1894533127",
+          "youtube": ""
+      },
+      {
+          "title": "Mirror",
+          "artist": "Porter Robinson",
+          "album": "Nurture",
+          "fav": 0,
+          "find": "Mirror Porter Robinson",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/mirror/1894533133",
+          "youtube": ""
       },
       {
           "title": "Something Comforting",
           "artist": "Porter Robinson",
           "album": "Nurture",
-          "fav": 0
+          "fav": 0,
+          "find": "Something Comforting Porter Robinson",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/something-comforting/1894533134",
+          "youtube": ""
       },
       {
-          "title": "Weird Fishes / Arpeggi",
+          "title": "Blossom",
+          "artist": "Porter Robinson",
+          "album": "Nurture",
+          "fav": 0,
+          "find": "Blossom Porter Robinson",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/blossom/1894533285",
+          "youtube": ""
+      },
+      {
+          "title": "Unfold",
+          "artist": "Porter Robinson",
+          "album": "Nurture",
+          "fav": 0,
+          "find": "Unfold Porter Robinson",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/unfold/1894533289",
+          "youtube": ""
+      },
+      {
+          "title": "Trying to Feel Alive",
+          "artist": "Porter Robinson",
+          "album": "Nurture",
+          "fav": 0,
+          "find": "Trying to Feel Alive Porter Robinson",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/trying-to-feel-alive/1894533290",
+          "youtube": ""
+      },
+      {
+          "title": "15 Step",
           "artist": "Radiohead",
           "album": "In Rainbows",
-          "fav": 1
+          "fav": 1,
+          "find": "15 Step Radiohead",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Bodysnatchers",
+          "artist": "Radiohead",
+          "album": "In Rainbows",
+          "fav": 1,
+          "find": "Bodysnatchers Radiohead",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Nude",
+          "artist": "Radiohead",
+          "album": "In Rainbows",
+          "fav": 1,
+          "find": "Nude Radiohead",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Weird Fishes/Arpeggi",
+          "artist": "Radiohead",
+          "album": "In Rainbows",
+          "fav": 1,
+          "find": "Weird Fishes/Arpeggi Radiohead",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "All I Need",
+          "artist": "Radiohead",
+          "album": "In Rainbows",
+          "fav": 1,
+          "find": "All I Need Radiohead",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Faust Arp",
+          "artist": "Radiohead",
+          "album": "In Rainbows",
+          "fav": 1,
+          "find": "Faust Arp Radiohead",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
       },
       {
           "title": "Reckoner",
           "artist": "Radiohead",
           "album": "In Rainbows",
-          "fav": 1
+          "fav": 1,
+          "find": "Reckoner Radiohead",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "House of Cards",
+          "artist": "Radiohead",
+          "album": "In Rainbows",
+          "fav": 1,
+          "find": "House of Cards Radiohead",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Jigsaw Falling Into Place",
+          "artist": "Radiohead",
+          "album": "In Rainbows",
+          "fav": 1,
+          "find": "Jigsaw Falling Into Place Radiohead",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Videotape",
+          "artist": "Radiohead",
+          "album": "In Rainbows",
+          "fav": 1,
+          "find": "Videotape Radiohead",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "8/31",
+          "artist": "Yorushika",
+          "album": "だから僕は音楽を辞めた",
+          "fav": 2,
+          "find": "8/31 ヨルシカ",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/8-31/1648876457",
+          "youtube": ""
+      },
+      {
+          "title": "藍二乗",
+          "artist": "Yorushika",
+          "album": "だから僕は音楽を辞めた",
+          "fav": 2,
+          "find": "藍二乗 ヨルシカ",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/%E8%97%8D%E4%BA%8C%E4%B9%97/1648876468",
+          "youtube": ""
+      },
+      {
+          "title": "八月、某、月明かり",
+          "artist": "Yorushika",
+          "album": "だから僕は音楽を辞めた",
+          "fav": 2,
+          "find": "八月、某、月明かり ヨルシカ",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/%E5%85%AB%E6%9C%88-%E6%9F%90-%E6%9C%88%E6%98%8E%E3%81%8B%E3%82%8A/1648876473",
+          "youtube": ""
+      },
+      {
+          "title": "詩書きとコーヒー",
+          "artist": "Yorushika",
+          "album": "だから僕は音楽を辞めた",
+          "fav": 2,
+          "find": "詩書きとコーヒー ヨルシカ",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/%E8%A9%A9%E6%9B%B8%E3%81%8D%E3%81%A8%E3%82%B3%E3%83%BC%E3%83%92%E3%83%BC/1648876485",
+          "youtube": ""
+      },
+      {
+          "title": "7/13",
+          "artist": "Yorushika",
+          "album": "だから僕は音楽を辞めた",
+          "fav": 2,
+          "find": "7/13 ヨルシカ",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/7-13/1648876734",
+          "youtube": ""
+      },
+      {
+          "title": "踊ろうぜ",
+          "artist": "Yorushika",
+          "album": "だから僕は音楽を辞めた",
+          "fav": 2,
+          "find": "踊ろうぜ ヨルシカ",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/%E8%B8%8A%E3%82%8D%E3%81%86%E3%81%9C/1648876743",
+          "youtube": ""
+      },
+      {
+          "title": "六月は雨上がりの街を書く",
+          "artist": "Yorushika",
+          "album": "だから僕は音楽を辞めた",
+          "fav": 2,
+          "find": "六月は雨上がりの街を書く ヨルシカ",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/%E5%85%AD%E6%9C%88%E3%81%AF%E9%9B%A8%E4%B8%8A%E3%81%8C%E3%82%8A%E3%81%AE%E8%A1%97%E3%82%92%E6%9B%B8%E3%81%8F/1648876753",
+          "youtube": ""
+      },
+      {
+          "title": "五月は花緑青の窓辺から",
+          "artist": "Yorushika",
+          "album": "だから僕は音楽を辞めた",
+          "fav": 2,
+          "find": "五月は花緑青の窓辺から ヨルシカ",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/%E4%BA%94%E6%9C%88%E3%81%AF%E8%8A%B1%E7%B7%91%E9%9D%92%E3%81%AE%E7%AA%93%E8%BE%BA%E3%81%8B%E3%82%89/1648877033",
+          "youtube": ""
+      },
+      {
+          "title": "夜紛い",
+          "artist": "Yorushika",
+          "album": "だから僕は音楽を辞めた",
+          "fav": 2,
+          "find": "夜紛い ヨルシカ",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/%E5%A4%9C%E7%B4%9B%E3%81%84/1648877043",
+          "youtube": ""
+      },
+      {
+          "title": "5/6",
+          "artist": "Yorushika",
+          "album": "だから僕は音楽を辞めた",
+          "fav": 2,
+          "find": "5/6 ヨルシカ",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/5-6/1648877052",
+          "youtube": ""
+      },
+      {
+          "title": "パレード",
+          "artist": "Yorushika",
+          "album": "だから僕は音楽を辞めた",
+          "fav": 2,
+          "find": "パレード ヨルシカ",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/%E3%83%91%E3%83%AC%E3%83%BC%E3%83%89/1648877301",
+          "youtube": ""
+      },
+      {
+          "title": "エルマ",
+          "artist": "Yorushika",
+          "album": "だから僕は音楽を辞めた",
+          "fav": 2,
+          "find": "エルマ ヨルシカ",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/%E3%82%A8%E3%83%AB%E3%83%9E/1648877308",
+          "youtube": ""
+      },
+      {
+          "title": "4/10",
+          "artist": "Yorushika",
+          "album": "だから僕は音楽を辞めた",
+          "fav": 2,
+          "find": "4/10 ヨルシカ",
+          "spotify": "",
+          "apple": "https://music.apple.com/ca/song/4-10/1648877316",
+          "youtube": ""
       },
       {
           "title": "だから僕は音楽を辞めた",
           "artist": "Yorushika",
           "album": "だから僕は音楽を辞めた",
+          "fav": 2,
           "find": "だから僕は音楽を辞めた ヨルシカ",
-          "cover": "https://i.scdn.co/image/ab67616d0000b273b1b3b83ffee5925197e7ef2c",
-          "apple": "https://music.apple.com/ca/album/%E3%81%A0%E3%81%8B%E3%82%89%E5%83%95%E3%81%AF%E9%9F%B3%E6%A5%BD%E3%82%92%E8%BE%9E%E3%82%81%E3%81%9F/1648876058",
-          "spotify": "https://open.spotify.com/album/4b9nOSXSf1LROzgfYFxdxI",
-          "fav": 2
+          "spotify": "https://open.spotify.com/track/5j7ixaLeGTGSv4DzKs0pCM",
+          "apple": "https://music.apple.com/ca/song/%E3%81%A0%E3%81%8B%E3%82%89%E5%83%95%E3%81%AF%E9%9F%B3%E6%A5%BD%E3%82%92%E8%BE%9E%E3%82%81%E3%81%9F/1648877323",
+          "youtube": ""
       },
       {
-          "title": "ヒッチコック",
-          "artist": "Yorushika",
-          "album": "だから僕は音楽を辞めた",
-          "find": "ヒッチコック ヨルシカ",
-          "cover": "https://i.scdn.co/image/ab67616d0000b273b1b3b83ffee5925197e7ef2c",
-          "apple": "https://music.apple.com/ca/album/%E3%81%A0%E3%81%8B%E3%82%89%E5%83%95%E3%81%AF%E9%9F%B3%E6%A5%BD%E3%82%92%E8%BE%9E%E3%82%81%E3%81%9F/1648876058",
-          "spotify": "https://open.spotify.com/album/4b9nOSXSf1LROzgfYFxdxI",
-          "fav": 2
-      },
-      {
-          "title": "Lady Brown",
+          "title": "Blessing It (Remix)",
           "artist": "Nujabes",
           "album": "Metaphorical Music",
-          "fav": 3
+          "fav": 3,
+          "find": "Blessing It (Remix) Nujabes",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
       },
       {
           "title": "Horn in the Middle",
           "artist": "Nujabes",
           "album": "Metaphorical Music",
-          "fav": 3
+          "fav": 3,
+          "find": "Horn in the Middle Nujabes",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
       },
       {
-          "title": "Sweden",
+          "title": "Lady Brown",
+          "artist": "Nujabes",
+          "album": "Metaphorical Music",
+          "fav": 3,
+          "find": "Lady Brown Nujabes",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Kumomi",
+          "artist": "Nujabes",
+          "album": "Metaphorical Music",
+          "fav": 3,
+          "find": "Kumomi Nujabes",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Highs 2 Lows",
+          "artist": "Nujabes",
+          "album": "Metaphorical Music",
+          "fav": 3,
+          "find": "Highs 2 Lows Nujabes",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Beat Laments the World",
+          "artist": "Nujabes",
+          "album": "Metaphorical Music",
+          "fav": 3,
+          "find": "Beat Laments the World Nujabes",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Letter from Yokosuka",
+          "artist": "Nujabes",
+          "album": "Metaphorical Music",
+          "fav": 3,
+          "find": "Letter from Yokosuka Nujabes",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Think Different",
+          "artist": "Nujabes",
+          "album": "Metaphorical Music",
+          "fav": 3,
+          "find": "Think Different Nujabes",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "A Day by Atmosphere Supreme",
+          "artist": "Nujabes",
+          "album": "Metaphorical Music",
+          "fav": 3,
+          "find": "A Day by Atmosphere Supreme Nujabes",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Next View",
+          "artist": "Nujabes",
+          "album": "Metaphorical Music",
+          "fav": 3,
+          "find": "Next View Nujabes",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Latitude (Remix)",
+          "artist": "Nujabes",
+          "album": "Metaphorical Music",
+          "fav": 3,
+          "find": "Latitude (Remix) Nujabes",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "F.I.L.O.",
+          "artist": "Nujabes",
+          "album": "Metaphorical Music",
+          "fav": 3,
+          "find": "F.I.L.O. Nujabes",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Summer Gypsy",
+          "artist": "Nujabes",
+          "album": "Metaphorical Music",
+          "fav": 3,
+          "find": "Summer Gypsy Nujabes",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "The Final View",
+          "artist": "Nujabes",
+          "album": "Metaphorical Music",
+          "fav": 3,
+          "find": "The Final View Nujabes",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Peaceland",
+          "artist": "Nujabes",
+          "album": "Metaphorical Music",
+          "fav": 3,
+          "find": "Peaceland Nujabes",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Key",
           "artist": "C418",
           "album": "Minecraft - Volume Alpha",
-          "fav": 4
+          "fav": 4,
+          "find": "Key C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Door",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Door C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Subwoofer Lullaby",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Subwoofer Lullaby C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Death",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Death C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Living Mice",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Living Mice C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Moog City",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Moog City C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Haggstrom",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Haggstrom C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Minecraft",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Minecraft C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Oxygène",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Oxygène C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Équinoxe",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Équinoxe C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Mice on Venus",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Mice on Venus C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Dry Hands",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Dry Hands C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
       },
       {
           "title": "Wet Hands",
           "artist": "C418",
           "album": "Minecraft - Volume Alpha",
-          "fav": 4
+          "fav": 4,
+          "find": "Wet Hands C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
       },
       {
-          "title": "Sparkle",
+          "title": "Clark",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Clark C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Chris",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Chris C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Thirteen",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Thirteen C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Excuse",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Excuse C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Sweden",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Sweden C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Cat",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Cat C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Dog",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Dog C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Danny",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Danny C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Beginning",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Beginning C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Droopy Likes Ricochet",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Droopy Likes Ricochet C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Droopy Likes Your Face",
+          "artist": "C418",
+          "album": "Minecraft - Volume Alpha",
+          "fav": 4,
+          "find": "Droopy Likes Your Face C418",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "夢灯籠",
           "artist": "RADWIMPS",
-          "album": "Your Name.",
-          "fav": 5
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "夢灯籠 RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
       },
       {
-          "title": "Nandemonaiya",
+          "title": "三葉の通学",
           "artist": "RADWIMPS",
-          "album": "Your Name.",
-          "fav": 5
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "三葉の通学 RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
       },
       {
-          "title": "Wake Up",
-          "artist": "Arcade Fire",
-          "album": "Funeral",
-          "fav": 6
+          "title": "糸守高校",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "糸守高校 RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "はじめての、東京",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "はじめての、東京 RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "憧れカフェ",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "憧れカフェ RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "奥寺先輩のテーマ",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "奥寺先輩のテーマ RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "ふたりの異変",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "ふたりの異変 RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "前前前世 (movie ver.)",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "前前前世 (movie ver.) RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "御神体",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "御神体 RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "デート",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "デート RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "秋祭り",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "秋祭り RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "記憶を呼び起こす瀧",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "記憶を呼び起こす瀧 RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "飛騨探訪",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "飛騨探訪 RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "消えた町",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "消えた町 RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "図書館",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "図書館 RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "旅館の夜",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "旅館の夜 RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "御神体へ再び",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "御神体へ再び RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "口噛み酒トリップ",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "口噛み酒トリップ RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "作戦会議",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "作戦会議 RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "町長説得",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "町長説得 RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "三葉のテーマ",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "三葉のテーマ RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "見えないふたり",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "見えないふたり RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "かたわれ時",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "かたわれ時 RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "スパークル (movie ver.)",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "スパークル (movie ver.) RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "デート2",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "デート2 RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "なんでもないや (movie edit)",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "なんでもないや (movie edit) RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "なんでもないや (movie ver.)",
+          "artist": "RADWIMPS",
+          "album": "君の名は。(Your Name.)",
+          "fav": 5,
+          "find": "なんでもないや (movie ver.) RADWIMPS",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
       },
       {
           "title": "Neighborhood #1 (Tunnels)",
           "artist": "Arcade Fire",
           "album": "Funeral",
-          "fav": 6
+          "fav": 6,
+          "find": "Neighborhood #1 (Tunnels) Arcade Fire",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
       },
       {
-          "title": "Do You Realize??",
-          "artist": "The Flaming Lips",
-          "album": "Yoshimi Battles the Pink Robots",
-          "fav": 7
+          "title": "Neighborhood #2 (Laïka)",
+          "artist": "Arcade Fire",
+          "album": "Funeral",
+          "fav": 6,
+          "find": "Neighborhood #2 (Laïka) Arcade Fire",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Une année sans lumière",
+          "artist": "Arcade Fire",
+          "album": "Funeral",
+          "fav": 6,
+          "find": "Une année sans lumière Arcade Fire",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Neighborhood #3 (Power Out)",
+          "artist": "Arcade Fire",
+          "album": "Funeral",
+          "fav": 6,
+          "find": "Neighborhood #3 (Power Out) Arcade Fire",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Neighborhood #4 (7 Kettles)",
+          "artist": "Arcade Fire",
+          "album": "Funeral",
+          "fav": 6,
+          "find": "Neighborhood #4 (7 Kettles) Arcade Fire",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Crown of Love",
+          "artist": "Arcade Fire",
+          "album": "Funeral",
+          "fav": 6,
+          "find": "Crown of Love Arcade Fire",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Wake Up",
+          "artist": "Arcade Fire",
+          "album": "Funeral",
+          "fav": 6,
+          "find": "Wake Up Arcade Fire",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Haïti",
+          "artist": "Arcade Fire",
+          "album": "Funeral",
+          "fav": 6,
+          "find": "Haïti Arcade Fire",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Rebellion (Lies)",
+          "artist": "Arcade Fire",
+          "album": "Funeral",
+          "fav": 6,
+          "find": "Rebellion (Lies) Arcade Fire",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "In the Backseat",
+          "artist": "Arcade Fire",
+          "album": "Funeral",
+          "fav": 6,
+          "find": "In the Backseat Arcade Fire",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
       },
       {
           "title": "Fight Test",
           "artist": "The Flaming Lips",
           "album": "Yoshimi Battles the Pink Robots",
-          "fav": 7
+          "fav": 7,
+          "find": "Fight Test The Flaming Lips",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "One More Robot / Sympathy 3000-21",
+          "artist": "The Flaming Lips",
+          "album": "Yoshimi Battles the Pink Robots",
+          "fav": 7,
+          "find": "One More Robot / Sympathy 3000-21 The Flaming Lips",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Yoshimi Battles the Pink Robots, Pt. 1",
+          "artist": "The Flaming Lips",
+          "album": "Yoshimi Battles the Pink Robots",
+          "fav": 7,
+          "find": "Yoshimi Battles the Pink Robots, Pt. 1 The Flaming Lips",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Yoshimi Battles the Pink Robots, Pt. 2",
+          "artist": "The Flaming Lips",
+          "album": "Yoshimi Battles the Pink Robots",
+          "fav": 7,
+          "find": "Yoshimi Battles the Pink Robots, Pt. 2 The Flaming Lips",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "In the Morning of the Magicians",
+          "artist": "The Flaming Lips",
+          "album": "Yoshimi Battles the Pink Robots",
+          "fav": 7,
+          "find": "In the Morning of the Magicians The Flaming Lips",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Ego Tripping at the Gates of Hell",
+          "artist": "The Flaming Lips",
+          "album": "Yoshimi Battles the Pink Robots",
+          "fav": 7,
+          "find": "Ego Tripping at the Gates of Hell The Flaming Lips",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Are You a Hypnotist??",
+          "artist": "The Flaming Lips",
+          "album": "Yoshimi Battles the Pink Robots",
+          "fav": 7,
+          "find": "Are You a Hypnotist?? The Flaming Lips",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "It's Summertime",
+          "artist": "The Flaming Lips",
+          "album": "Yoshimi Battles the Pink Robots",
+          "fav": 7,
+          "find": "It's Summertime The Flaming Lips",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Do You Realize??",
+          "artist": "The Flaming Lips",
+          "album": "Yoshimi Battles the Pink Robots",
+          "fav": 7,
+          "find": "Do You Realize?? The Flaming Lips",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "All We Have Is Now",
+          "artist": "The Flaming Lips",
+          "album": "Yoshimi Battles the Pink Robots",
+          "fav": 7,
+          "find": "All We Have Is Now The Flaming Lips",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Approaching Pavonis Mons by Balloon (Utopia Planitia)",
+          "artist": "The Flaming Lips",
+          "album": "Yoshimi Battles the Pink Robots",
+          "fav": 7,
+          "find": "Approaching Pavonis Mons by Balloon (Utopia Planitia) The Flaming Lips",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Melt Session #1 (feat. Robert Glasper)",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "Melt Session #1 (feat. Robert Glasper) Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
       },
       {
           "title": "Walkin",
           "artist": "Denzel Curry",
-          "album": "Melt My Eyez See Your Future",
-          "cover": "https://i.scdn.co/image/ab67616d0000b273069dc0623d2e2ad7f10b6d3c",
-          "fav": 8
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "Walkin Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
       },
       {
-          "title": "Melt Session #1",
+          "title": "Worst Comes to Worst",
           "artist": "Denzel Curry",
-          "album": "Melt My Eyez See Your Future",
-          "cover": "https://i.scdn.co/image/ab67616d0000b273069dc0623d2e2ad7f10b6d3c",
-          "fav": 8
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "Worst Comes to Worst Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "John Wayne (feat. Buzzy Lee)",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "John Wayne (feat. Buzzy Lee) Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "The Last",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "The Last Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Mental (feat. Saul Williams and Bridget Perez)",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "Mental (feat. Saul Williams and Bridget Perez) Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Troubles (feat. T-Pain)",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "Troubles (feat. T-Pain) Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Ain't No Way (feat. 6LACK, Rico Nasty and JID)",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "Ain't No Way (feat. 6LACK, Rico Nasty and JID) Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "X-Wing",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "X-Wing Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Angelz",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "Angelz Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "The Smell of Death",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "The Smell of Death Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Sanjuro (feat. 454)",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "Sanjuro (feat. 454) Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Zatoichi (feat. slowthai)",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "Zatoichi (feat. slowthai) Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "The Ills",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "The Ills Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Melt Session #1 (Cold Blooded Soul Version)",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "Melt Session #1 (Cold Blooded Soul Version) Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Walkin (Cold Blooded Soul Version)",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "Walkin (Cold Blooded Soul Version) Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Worst Come To Worst (Cold Blooded Soul Version)",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "Worst Come To Worst (Cold Blooded Soul Version) Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Mental (Cold Blooded Soul Version)",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "Mental (Cold Blooded Soul Version) Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Troubles (Cold Blooded Soul Version)",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "Troubles (Cold Blooded Soul Version) Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Chrome Hearts (Cold Blooded Soul Version)",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "Chrome Hearts (Cold Blooded Soul Version) Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "X-Wing (Cold Blooded Soul Version)",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "X-Wing (Cold Blooded Soul Version) Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Angelz (Cold Blooded Soul Version)",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "Angelz (Cold Blooded Soul Version) Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "Larger Than Life (Extended Edition)",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "Larger Than Life (Extended Edition) Denzel Curry",
+          "spotify": "",
+          "apple": "",
+          "youtube": ""
+      },
+      {
+          "title": "The Ills (Cold Blooded Soul Version)",
+          "artist": "Denzel Curry",
+          "album": "Melt My Eyez See Your Future (The Extended Edition)",
+          "fav": 8,
+          "find": "The Ills (Cold Blooded Soul Version) Denzel Curry",
+          "spotify": "https://open.spotify.com/track/1qbk40CMjPGHyvuZ6D0Ota",
+          "apple": "",
+          "youtube": ""
       }
   ];
 
   const NP_TINT = 0.1;      // how much of the page tint the covers and the machine take (0 = none, 1 = all)
   const SHAKE_MS = 1500;    // how long the machine shakes before the song comes out
-  const COUNTRY = 'ca';     // iTunes store country for covers and links
 
   /* ================================================================== */
 
@@ -893,22 +2260,6 @@
   }
   syncNPTint(); setInterval(syncNPTint, 150);
 
-  /* ---------- Covers from iTunes Search (free, no key). JSONP so it works from any web page. ---------- */
-  const lookupCache = {};
-  function itunes(params) {
-    const key = JSON.stringify(params);
-    if (lookupCache[key]) return lookupCache[key];
-    return (lookupCache[key] = new Promise(resolve => {
-      const cb = 'itunes_' + Math.random().toString(36).slice(2);
-      const s = document.createElement('script');
-      const done = d => { clearTimeout(timer); delete window[cb]; s.remove(); resolve(d && d.results && d.results[0] ? d.results[0] : null); };
-      const timer = setTimeout(() => done(null), 7000);
-      window[cb] = done; s.onerror = () => done(null);
-      s.src = 'https://itunes.apple.com/search?' + new URLSearchParams({ ...params, country: COUNTRY, limit: '1', callback: cb });
-      document.head.appendChild(s);
-    }));
-  }
-  const bigArt = url => url ? url.replace(/\/\d+x\d+bb\./, '/600x600bb.') : null;
   // stand-in cover (dithered gradient + title) while loading, or if the lookup isn't possible
   function standIn(text, seed) {
     const c = document.createElement('canvas'); c.width = c.height = 300; const g = c.getContext('2d');
@@ -928,11 +2279,7 @@
 
   /* ---------- Favourite albums ---------- */
   const grid = $('.fav-grid'), tip = $('.tip');
-  grid.innerHTML = FAVORITES.map((a, i) => `<button type="button" class="fav" role="listitem" data-i="${i}" aria-label="${esc(a.label)}"><img alt="" src="${a.cover ? esc(a.cover) : standIn(a.label.split(' - ')[0], a.label)}"></button>`).join('');
-  FAVORITES.forEach((a, i) => {
-    if (a.cover) return;
-    itunes({ term: a.find, entity: 'album' }).then(r => { if (r && r.artworkUrl100) grid.querySelector(`[data-i="${i}"] img`).src = bigArt(r.artworkUrl100); });
-  });
+  grid.innerHTML = FAVORITES.map((a, i) => `<button type="button" class="fav" role="listitem" data-i="${i}" aria-label="${esc(a.label)}"><img alt="" src="${esc(a.cover)}"></button>`).join('');
   function showTip(el) {
     tip.textContent = FAVORITES[el.dataset.i].label; tip.hidden = false;
     const r = el.getBoundingClientRect(), t = tip.getBoundingClientRect();
@@ -1006,33 +2353,21 @@
           <div class="song-album">${esc(s.album)}</div>
           <div class="links">
             <a class="winbtn" href="${esc(s.spotify || 'https://open.spotify.com/search/' + search(s))}" target="_blank" rel="noopener">Spotify ↗</a>
-            <a class="winbtn am" href="${esc(s.apple || `https://music.apple.com/${COUNTRY}/search?term=${search(s)}`)}" target="_blank" rel="noopener">Apple Music ↗</a>
-            <a class="winbtn" href="https://music.youtube.com/search?q=${search(s)}" target="_blank" rel="noopener">YouTube Music ↗</a>
+            <a class="winbtn" href="${esc(s.apple || 'https://music.apple.com/ca/search?term=' + search(s))}" target="_blank" rel="noopener">Apple Music ↗</a>
+            <a class="winbtn" href="${esc(s.youtube || 'https://www.youtube.com/results?search_query=' + search(s))}" target="_blank" rel="noopener">YouTube ↗</a>
           </div>
           <button type="button" class="winbtn song-again">Another one</button>
         </div>
       </div></div></div></div>
     </article>`;
   }
-  // the album's cover, exactly as in the grid (or the album's own lookup if the grid hasn't loaded it yet)
-  function albumCover(s) {
-    const a = FAVORITES[s.fav]; if (s.cover) return s.cover; if (a && a.cover) return a.cover;
-    const img = grid.querySelector(`[data-i="${s.fav}"] img`);
-    return img && !img.src.startsWith('data:') ? img.src : standIn(s.album, s.album);
-  }
+  // the pop-up always shows the album's own cover file (never anything from the web)
+  const albumCover = s => FAVORITES[s.fav].cover;
   function showSong(s) {
     special('negative', { gain: 0.8 });   // the song pops out
     modalBody.innerHTML = songHTML(s);
     modal.hidden = false; document.body.classList.add('modal-open');
     modalBody.querySelector('.song-again').focus({ preventScroll: true });
-    const still = () => !modal.hidden && modalBody.querySelector('.song-title') && modalBody.querySelector('.song-title').textContent === s.title;
-    const a = FAVORITES[s.fav];
-    if (a && !a.cover && !s.cover && albumCover(s).startsWith('data:'))   // grid cover not in yet: look the album up
-      itunes({ term: a.find, entity: 'album' }).then(r => { if (r && r.artworkUrl100 && still()) modalBody.querySelector('.cover-img').src = bigArt(r.artworkUrl100); });
-    if (!s.apple) itunes({ term: s.find || `${s.title} ${s.artist}`, entity: 'song' }).then(r => {
-      // only use a direct Apple Music link if it really is this artist (never a cover version)
-      if (r && r.trackViewUrl && still() && (r.artistName || '').toLowerCase().includes(s.artist.toLowerCase())) modalBody.querySelector('.am').href = r.trackViewUrl;
-    });
   }
 
   const closeSong = () => { if (modal.hidden) return; modal.hidden = true; modalBody.innerHTML = ''; document.body.classList.remove('modal-open'); vm.focus({ preventScroll: true }); };
