@@ -1403,6 +1403,12 @@
       addEventListener('keydown', e => { if (startEl.isConnected && !going && !e.metaKey && !e.ctrlKey) go(e); }, true);
     }, 70);
   }
+  // Back button: the browser may restore this page exactly as it was left (faded out). Bring it back.
+  addEventListener('pageshow', e => {
+    if (!e.persisted) return;
+    document.body.classList.remove('leaving'); hoverStop();
+    if (actx && actx.state === 'suspended') actx.resume();
+  });
 })();
 </script>
 </body>

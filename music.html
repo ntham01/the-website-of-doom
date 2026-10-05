@@ -836,6 +836,12 @@
   syncStillTint(); setInterval(syncStillTint, 150);
 
   if (soundOn) tryHum();   // starts straight away where the browser allows it, otherwise on the first click or key
+  // Back button: the browser may restore this page exactly as it was left (faded to black). Bring it back.
+  addEventListener('pageshow', e => {
+    if (!e.persisted) return;
+    const f = document.querySelector('.fade'); if (f) { f.classList.remove('out'); f.classList.add('in'); }
+    if (actx && actx.state === 'suspended') actx.resume();
+  });
 
   /* ---------- Releases ---------- */
   const albumsEl = $('.albums');
