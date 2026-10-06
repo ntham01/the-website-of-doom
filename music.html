@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>/* touch devices (phones and tablets, even in "desktop site" mode) get the light version of the site */
+(function(){var n=navigator,u=n.userAgent||'',t=(window.matchMedia&&matchMedia('(pointer: coarse)').matches)||/Mobi|Android|iPhone|iPad|iPod|Silk|Kindle/i.test(u)||(/Macintosh/.test(u)&&n.maxTouchPoints>1);if(t)document.documentElement.classList.add('touch');})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>My Music — Nathaniel “Chuch” Tham</title>
@@ -329,12 +331,14 @@
   /* ---------- Phones and tablets: lighter effects, so scrolling stays smooth ----------
      The big surfaces skip the colour-fringe effect (costly to redraw on a phone), windows don't start blurred,
      and the music player's pixel effect (which Safari can't draw) is off. Text and covers keep their look. */
-  @media (hover: none) and (pointer: coarse) {
-    .fx, .paper, .win::before, .win::after, .win-bar::before, .win-body::before, .modal-backdrop { filter: none !important; }
-    .win { filter: none !important; }
-    .player .pl-row, .player .pctrl { filter: none !important; }
-  }
+  /* touch devices */
+    html.touch .fx, html.touch .paper, html.touch .win::before, html.touch .win::after, html.touch .win-bar::before, html.touch .win-body::before, html.touch .modal-backdrop { filter: none !important; }
+    html.touch .win { filter: none !important; }
+    html.touch .player .pl-row, html.touch .player .pctrl { filter: none !important; }
+  
+
   .is-safari .player .pl-row, .is-safari .player .pctrl { filter: none !important; }
+  html.touch .st-text, html.touch .st-text.art { filter: none !important; }   /* phones: long articles under an effect can render blank on iPhone */
 </style>
 </head>
 <body>
@@ -604,7 +608,7 @@
 
   /* ---------- Sound (shared on/off with the home page) ---------- */
   if (/^((?!chrome|android|crios|fxios).)*safari/i.test(navigator.userAgent)) document.documentElement.classList.add('is-safari');
-  const isPhone = matchMedia('(hover: none) and (pointer: coarse)').matches;   // a real touchscreen phone or tablet, not just a narrow window
+  const isPhone = document.documentElement.classList.contains('touch');   // set by the little script at the top of the page
   let soundOn = !isPhone && store.get('nt-sound-2') !== 'off', actx = null, master = null, noiseBuf = null; // phones: interface sounds off (music still plays)
   function unlockAudio() {
     if (actx) { if (actx.state === 'suspended') actx.resume(); return; }
@@ -1020,7 +1024,7 @@
   const RAMP_STEPS = 40; // ~3.6 s to ease from the current look into the rainbow
   let rampAt = 0, from = null;
   function rainbow(on) {
-    if (on && !rainbowTimer && !reduceMotion) {
+    if (on && !rainbowTimer && !reduceMotion && !isPhone) {   // phones: no rainbow
       from = currentTint(); rampAt = 0;
       // freeze the current look for the playing window
       const baseId = (getComputedStyle(document.documentElement).getPropertyValue('--fx').match(/#([\w-]+)/) || [, 'chroma'])[1];
@@ -1065,7 +1069,7 @@
   const danceImg = $('.dance');
   let danceWait = null;
   function danceOn() {
-    if (reduceMotion) return;
+    if (reduceMotion || isPhone) return;   // phones: no dance
     danceImg.src = DANCE.src;       // loads on first use
     danceImg.classList.add('on');
   }
