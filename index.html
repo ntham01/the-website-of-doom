@@ -1435,7 +1435,7 @@
     opening.addEventListener('pointerdown', finish);
     addEventListener('keydown', finish, { once: true });
   }
-  function beginPage(fast) { if (runOpening) runTV(fast); else { opening.remove(); revealText(0); } }
+  function beginPage(fast) { if (runOpening && !isPhone) runTV(fast); else { opening.remove(); revealText(0); } }   // phones: no TV doors, the page is simply there
 
   /* ---------- Start screen ----------
      If the browser already allows sound (it often does once you've clicked around the site), skip it.
