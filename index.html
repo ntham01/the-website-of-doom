@@ -293,6 +293,7 @@
     73% { opacity: 0.86; } 74% { opacity: 1; } 88% { opacity: 0.72; } 89% { opacity: 1; } 100% { opacity: 1; } }
   @keyframes start-flicker-soft { 0% { opacity: 1; } 30% { opacity: 0.82; } 31% { opacity: 1; } 70% { opacity: 0.9; } 71% { opacity: 1; } }
   /* when the start screen hands over, the TV's doors wear the same grain, so it opens straight into the page */
+  .opening.fade-up { opacity: 0; transition: opacity 850ms ease-out; }   /* phones: fade up from black */
   .opening.grained .door { overflow: hidden; }
   .door-grain { position: absolute; left: 0; width: 100%; height: 100vh; image-rendering: pixelated; pointer-events: none; }
   .door.top .door-grain { top: 0; }
@@ -1435,7 +1436,16 @@
     opening.addEventListener('pointerdown', finish);
     addEventListener('keydown', finish, { once: true });
   }
-  function beginPage(fast) { if (runOpening && !isPhone) runTV(fast); else { opening.remove(); revealText(0); } }   // phones: no TV doors, the page is simply there
+  function beginPage(fast) {
+    if (runOpening && !isPhone) { runTV(fast); return; }
+    if (runOpening && isPhone) {   // phones: no TV doors; the page fades up from black instead
+      opening.style.pointerEvents = 'none'; revealText(0);
+      requestAnimationFrame(() => requestAnimationFrame(() => opening.classList.add('fade-up')));
+      setTimeout(() => opening.remove(), 1000);
+      return;
+    }
+    opening.remove(); revealText(0);
+  }
 
   /* ---------- Start screen ----------
      If the browser already allows sound (it often does once you've clicked around the site), skip it.
