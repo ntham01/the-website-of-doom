@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>/* touch devices (phones and tablets, even in "desktop site" mode) get the light version of the site */
+(function(){var n=navigator,u=n.userAgent||'',t=(window.matchMedia&&matchMedia('(pointer: coarse)').matches)||/Mobi|Android|iPhone|iPad|iPod|Silk|Kindle/i.test(u)||(/Macintosh/.test(u)&&n.maxTouchPoints>1);if(t)document.documentElement.classList.add('touch');})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Now Playing — Nathaniel “Chuch” Tham</title>
@@ -292,11 +294,12 @@
   /* ---------- Phones and tablets: lighter effects, so scrolling stays smooth ----------
      The big surfaces skip the colour-fringe effect (costly to redraw on a phone), windows don't start blurred,
      and the music player's pixel effect (which Safari can't draw) is off. Text and covers keep their look. */
-  @media (hover: none) and (pointer: coarse) {
-    .fx, .paper, .win::before, .win::after, .win-bar::before, .win-body::before, .modal-backdrop { filter: none !important; }
-    .win { filter: none !important; }
-    .player .pl-row, .player .pctrl { filter: none !important; }
-  }
+  /* touch devices */
+    html.touch .fx, html.touch .paper, html.touch .win::before, html.touch .win::after, html.touch .win-bar::before, html.touch .win-body::before, html.touch .modal-backdrop { filter: none !important; }
+    html.touch .win { filter: none !important; }
+    html.touch .player .pl-row, html.touch .player .pctrl { filter: none !important; }
+  
+
   .is-safari .player .pl-row, .is-safari .player .pctrl { filter: none !important; }
 </style>
 </head>
@@ -1262,271 +1265,271 @@
           "youtube": ""
       },
       {
-          "title": "夢灯籠",
+          "title": "Dream Lantern",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "夢灯籠 RADWIMPS",
+          "find": "Dream Lantern RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "三葉の通学",
+          "title": "School Road",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "三葉の通学 RADWIMPS",
+          "find": "School Road RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "糸守高校",
+          "title": "Itomori High School",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "糸守高校 RADWIMPS",
+          "find": "Itomori High School RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "はじめての、東京",
+          "title": "First View of Tokyo",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "はじめての、東京 RADWIMPS",
+          "find": "First View of Tokyo RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "憧れカフェ",
+          "title": "Cafe At Last",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "憧れカフェ RADWIMPS",
+          "find": "Cafe At Last RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "奥寺先輩のテーマ",
+          "title": "Theme of Ms. Okudera",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "奥寺先輩のテーマ RADWIMPS",
+          "find": "Theme of Ms. Okudera RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "ふたりの異変",
+          "title": "Unusual Changes of Two",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "ふたりの異変 RADWIMPS",
+          "find": "Unusual Changes of Two RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "前前前世 (movie ver.)",
+          "title": "Zenzenzense (movie ver.)",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "前前前世 (movie ver.) RADWIMPS",
+          "find": "Zenzenzense (movie ver.) RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "御神体",
+          "title": "Goshintai",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "御神体 RADWIMPS",
+          "find": "Goshintai RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "デート",
+          "title": "Date",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "デート RADWIMPS",
+          "find": "Date RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "秋祭り",
+          "title": "Autumn Festival",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "秋祭り RADWIMPS",
+          "find": "Autumn Festival RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "記憶を呼び起こす瀧",
+          "title": "Evoking Memories",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "記憶を呼び起こす瀧 RADWIMPS",
+          "find": "Evoking Memories RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "飛騨探訪",
+          "title": "Visit to Hida",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "飛騨探訪 RADWIMPS",
+          "find": "Visit to Hida RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "消えた町",
+          "title": "Disappeared Town",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "消えた町 RADWIMPS",
+          "find": "Disappeared Town RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "図書館",
+          "title": "Library",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "図書館 RADWIMPS",
+          "find": "Library RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "旅館の夜",
+          "title": "The Night Inn",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "旅館の夜 RADWIMPS",
+          "find": "The Night Inn RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "御神体へ再び",
+          "title": "Again to Goshintai",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "御神体へ再び RADWIMPS",
+          "find": "Again to Goshintai RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "口噛み酒トリップ",
+          "title": "Kuchikamizake Trip",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "口噛み酒トリップ RADWIMPS",
+          "find": "Kuchikamizake Trip RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "作戦会議",
+          "title": "Council of War",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "作戦会議 RADWIMPS",
+          "find": "Council of War RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "町長説得",
+          "title": "Persuading Mayor",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "町長説得 RADWIMPS",
+          "find": "Persuading Mayor RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "三葉のテーマ",
+          "title": "Theme of Mitsuha",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "三葉のテーマ RADWIMPS",
+          "find": "Theme of Mitsuha RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "見えないふたり",
+          "title": "Unseen Two",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "見えないふたり RADWIMPS",
+          "find": "Unseen Two RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "かたわれ時",
+          "title": "Katawaredoki",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "かたわれ時 RADWIMPS",
+          "find": "Katawaredoki RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "スパークル (movie ver.)",
+          "title": "Sparkle (movie ver.)",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "スパークル (movie ver.) RADWIMPS",
+          "find": "Sparkle (movie ver.) RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "デート2",
+          "title": "Date 2",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "デート2 RADWIMPS",
+          "find": "Date 2 RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "なんでもないや (movie edit)",
+          "title": "Nandemonaiya (movie edit)",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "なんでもないや (movie edit) RADWIMPS",
+          "find": "Nandemonaiya (movie edit) RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
       },
       {
-          "title": "なんでもないや (movie ver.)",
+          "title": "Nandemonaiya (movie ver.)",
           "artist": "RADWIMPS",
           "album": "君の名は。(Your Name.)",
           "fav": 5,
-          "find": "なんでもないや (movie ver.) RADWIMPS",
+          "find": "Nandemonaiya (movie ver.) RADWIMPS",
           "spotify": "",
           "apple": "",
           "youtube": ""
@@ -2010,7 +2013,7 @@
 
   /* ---------- Sound (shared on/off with the home page) ---------- */
   if (/^((?!chrome|android|crios|fxios).)*safari/i.test(navigator.userAgent)) document.documentElement.classList.add('is-safari');
-  const isPhone = matchMedia('(hover: none) and (pointer: coarse)').matches;   // a real touchscreen phone or tablet, not just a narrow window
+  const isPhone = document.documentElement.classList.contains('touch');   // set by the little script at the top of the page
   let soundOn = !isPhone && store.get('nt-sound-2') !== 'off', actx = null, master = null, noiseBuf = null; // phones: interface sounds off (music still plays)
   function unlockAudio() {
     if (actx) { if (actx.state === 'suspended') actx.resume(); return; }
@@ -2365,8 +2368,19 @@
   function layout() { if (favGrid.isConnected) favGrid.style.setProperty('--cell', '86px'); sizeMachine(); sizeAlbums(); }
   layout(); addEventListener('resize', layout);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
-  let bag = [];
-  const nextSong = () => { if (!bag.length) bag = SONGS.map((_, i) => i).sort(() => Math.random() - 0.5); return SONGS[bag.pop()]; }; // every song once before any repeats
+  // Albums take turns: each of the nine comes up once before any repeats, and never the same album twice in a row,
+  // even across a refresh (the last album is remembered). Within an album, every song comes up once before repeating.
+  let albumBag = []; const songBags = {};
+  const shuffle = arr => { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; };
+  function nextSong() {
+    const last = Number(store.get('nt-vm-last') ?? -1);
+    if (!albumBag.length) albumBag = shuffle(FAVORITES.map((_, i) => i));
+    let k = albumBag.findIndex(a => a !== last); if (k < 0) k = 0;
+    const fav = albumBag.splice(k, 1)[0];
+    if (!songBags[fav] || !songBags[fav].length) songBags[fav] = shuffle(SONGS.map((_, i) => i).filter(i => SONGS[i].fav === fav));
+    store.set('nt-vm-last', String(fav));
+    return SONGS[songBags[fav].pop()];
+  }
   const search = s => encodeURIComponent(s.find || `${s.title} ${s.artist}`);
   const modal = $('.modal'), modalBody = $('.modal-body');
   function songHTML(s) {
