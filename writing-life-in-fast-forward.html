@@ -212,8 +212,9 @@
   .st-text.art { filter: var(--fxf); }   /* article text: the tint without the heavy fringe, so it reads lighter */
   .st-wrap .win-body { padding: 16px 20px 18px; }
 
-  .art-wrap { max-width: 820px; margin: 0 auto; padding: clamp(14px, 2.2vh, 26px) 6px 30px; }
+  .art-wrap { max-width: min(1100px, 78vw); margin: 0 auto; padding: clamp(14px, 2.2vh, 26px) 6px 30px; }
   .art-wrap.wide { max-width: 1120px; }
+  @media (max-width: 900px) { .art-wrap { max-width: none; } }   /* phones: the full width, as before */
   .art-back { display: inline-block; margin-bottom: clamp(26px, 4vh, 40px); text-decoration: none; filter: var(--fxf) url(#fringe-more); } /* follows the chroma look like the windows */
   .art { font-size: clamp(18px, 1.35vw, 21px); line-height: 1.65; color: #2c2a26; }
   /* header photo: a wide banner, with 20% of the page tint (see STILL_TINT) and the soft fringe */
@@ -390,7 +391,7 @@
     <main class="st-wrap"><div class="art-wrap">
       <a class="winbtn art-back" href="writings.html">← All writings</a>
       <article class="st-text art art-raw">
-        <figure class="art-hero"><img src="writing-header-sf-reflections.jpg" srcset="writing-header-sf-reflections-sm.jpg 1200w, writing-header-sf-reflections.jpg 1800w" sizes="(max-width: 900px) 100vw, 900px" alt="Houses on a green hillside under a deep blue sky"></figure>
+        <figure class="art-hero"><img src="writing-header-sf-reflections.jpg" srcset="writing-header-sf-reflections-sm.jpg 1200w, writing-header-sf-reflections.jpg 1800w" sizes="(max-width: 900px) 100vw, 1100px" alt="Houses on a green hillside under a deep blue sky"></figure>
         <h2 class="art-title">Life in Fast Forward: Reflecting on 3 months working in San Francisco.</h2>
           <p class="art-note">Below are some reflections I had in December of last year, a week before returning back to Vancouver from 3 months in San Francisco. I think my thoughts have developed since on these topics, but I wanted to keep them here unaltered to remember. I challenged myself to not use AI to write this, so apologies for thoughts being disjointed.</p>
           <p>Hey everyone. I delayed going back home a week early to make a personal video reflecting on my time in San Francisco so far, but I got sick recently (I suspect COVID-19 from a party) and so instead I’m taking the time to write these essays instead. Crazy how timing works sometimes.</p>

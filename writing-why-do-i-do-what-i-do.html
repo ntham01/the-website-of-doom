@@ -212,8 +212,9 @@
   .st-text.art { filter: var(--fxf); }   /* article text: the tint without the heavy fringe, so it reads lighter */
   .st-wrap .win-body { padding: 16px 20px 18px; }
 
-  .art-wrap { max-width: 820px; margin: 0 auto; padding: clamp(14px, 2.2vh, 26px) 6px 30px; }
+  .art-wrap { max-width: min(1100px, 78vw); margin: 0 auto; padding: clamp(14px, 2.2vh, 26px) 6px 30px; }
   .art-wrap.wide { max-width: 1120px; }
+  @media (max-width: 900px) { .art-wrap { max-width: none; } }   /* phones: the full width, as before */
   .art-back { display: inline-block; margin-bottom: clamp(26px, 4vh, 40px); text-decoration: none; filter: var(--fxf) url(#fringe-more); } /* follows the chroma look like the windows */
   .art { font-size: clamp(18px, 1.35vw, 21px); line-height: 1.65; color: #2c2a26; }
   /* header photo: a wide banner, with 20% of the page tint (see STILL_TINT) and the soft fringe */
@@ -390,7 +391,7 @@
     <main class="st-wrap"><div class="art-wrap">
       <a class="winbtn art-back" href="writings.html">← All writings</a>
       <article class="st-text art art-raw">
-        <figure class="art-hero"><img src="writing-header-why-do-i-do.jpg" srcset="writing-header-why-do-i-do-sm.jpg 1200w, writing-header-why-do-i-do.jpg 1800w" sizes="(max-width: 900px) 100vw, 900px" alt="Houses climbing a green hillside above the water on a clear day"></figure>
+        <figure class="art-hero"><img src="writing-header-why-do-i-do.jpg" srcset="writing-header-why-do-i-do-sm.jpg 1200w, writing-header-why-do-i-do.jpg 1800w" sizes="(max-width: 900px) 100vw, 1100px" alt="Houses climbing a green hillside above the water on a clear day"></figure>
         <h2 class="art-title">Why do I do what I do?</h2>
           <p>My 4 values in life are:</p>
           <ol>
