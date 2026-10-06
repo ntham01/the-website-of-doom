@@ -82,6 +82,11 @@
   /* ---------- Header ---------- */
   .intro { position: absolute; top: calc(var(--bezel) + clamp(34px, 6.5vh, 80px)); left: 50%; transform: translateX(-50%); text-align: center; width: max-content; max-width: 88vw; }
   .intro h1 { margin: 0; font-size: clamp(44px, 4.9vw, 78px); font-weight: 700; letter-spacing: -0.015em; line-height: 1.05; }
+  /* full-size desktop windows only: a slightly smaller title, a little closer to the top (more room for bigger icons) */
+  @media (min-width: 1300px) and (min-height: 780px) and (hover: hover) and (pointer: fine) {
+    .intro { top: calc(var(--bezel) + clamp(38px, 6.4vh, 80px)); }
+    .intro h1 { font-size: clamp(42px, 4.45vw, 71px); }
+  }
   .blurb { margin: 8px 0 0; font-size: clamp(16px, 1.35vw, 21px); color: var(--quiet); line-height: 1.4; }
 
   .welcome { margin: clamp(12px, 2vh, 20px) 0 0; font-size: clamp(20px, 1.85vw, 28px); font-weight: 400; letter-spacing: -0.005em; line-height: 1.25; }
@@ -136,7 +141,7 @@
   .objects:has(.object:hover) .object:not(:hover) .art,
   .objects:has(.object:focus-visible) .object:not(:focus-visible) .art { opacity: 0.3; }
   .object .boil { display: block; }
-  .object .art { width: var(--icon, 136px); aspect-ratio: 1; display: grid; place-items: center; }
+  .object .art { width: calc(var(--icon, 136px) * var(--icon-scale, 1)); aspect-ratio: 1; display: grid; place-items: center; }
   .object .art img { width: 100%; height: 100%; object-fit: contain; }
   .object .art img.pixel { image-rendering: pixelated; }
   .object .placeholder { width: 100%; height: 100%; border: 1.5px dashed var(--faint); border-radius: 28px; display: grid; place-items: center; font-size: 13px; color: var(--quiet); text-align: center; padding: 10px; line-height: 1.3; }
@@ -338,6 +343,15 @@
     .foot { white-space: normal; text-align: center; }
     .foot-list { justify-content: center; }
     .object .art { width: 136px; }
+  }
+  /* ---------- Phones and tablets: no chroma option, and a much lighter page ----------
+     The chroma picker is gone, nothing goes through the chroma effect, and the TV grain layer is drawn
+     once and laid on top normally instead of being re-blended with the whole screen. */
+  @media (hover: none) and (pointer: coarse) {
+    .chroma-pick { display: none !important; }
+    .object .art, .start-word, .start-cat, .intro, .save, .toggles, .portrait, .foot, .about-now, .object .label { filter: none !important; }
+    .tv { mix-blend-mode: normal; }
+    .object, .boil, [data-boil] { will-change: translate; }
   }
   /* ---------- Phones and tablets: lighter effects ----------
      The opening's full-page mosaic and the colour fringe on the big layers are costly to draw on a phone; skip them there. */
@@ -542,7 +556,11 @@
   // `x` / `y` above are only used if the arc is switched off.
   // Head and icon sizes on laptops/desktops. iconToFace = icon height as a share of the head's height
   // (0.34 is the balance of a square window); faceOfHeight / faceMax cap how big the head gets.
-  const SIZING = { iconToFace: 0.34, faceOfHeight: 0.42, faceMax: 620, belowTitle: 46 }; // belowTitle: px of space between the titles and the top icon
+  const BIG_DESKTOP = matchMedia('(min-width: 1300px) and (min-height: 780px) and (hover: hover) and (pointer: fine)');
+  const SIZING = { faceOfHeightBig: 0.46, faceDropBig: 14, iconToFaceBig: 0.45, iconToFace: 0.34, faceOfHeight: 0.42, faceMax: 620, belowTitle: 46 }; // belowTitle: px of space between the titles and the top icon
+  // full-size desktop only: individual icons a little bigger (scale) and lower (down, in icon heights)
+  const ICON_TWEAKS = { headphones: { scale: 1.1, down: 0 }, telephone: { scale: 1.1, down: 0 } };   // full-size desktop: these two a bit bigger
+  const ICON_LIFT = 0.32;   // full-size desktop: all the icons sit this much higher (in icon heights), keeping clear air under the welcome line
   const ARC = { on: true, angles: [180, 225, 270, 315, 360], gap: 130, drop: 22 }; // drop = push the arc and head down (px)
   const SECTIONS_BUILT = false; // while false, clicking an object shows a "not built yet" screen
 
@@ -1117,7 +1135,7 @@
     if (e.key === 'Escape') { openMenu(false); chromaBtn.focus(); }
   });
   document.addEventListener('click', e => { if (!chromaPick.contains(e.target)) openMenu(false); });
-  applyChroma(store.get('localStorage', 'nt-chroma') || CHROMA[0].id);
+  applyChroma(isPhone ? CHROMA[0].id : (store.get('localStorage', 'nt-chroma') || CHROMA[0].id));   // phones: always the default look, no chroma option
 
 
   const translateOf = st => { const [x, y] = st.poses.at(st.at); return `${x}px ${y}px`; };
@@ -1143,7 +1161,8 @@
     const g = c.getContext('2d'), img = g.createImageData(220, 220);
     for (let i = 0; i < img.data.length; i += 4) {
       const v = Math.random() < 0.45 ? 255 - Math.pow(Math.random(), 1.4) * 120 : 255;
-      img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255;
+      if (isPhone) { img.data[i] = img.data[i + 1] = img.data[i + 2] = 0; img.data[i + 3] = 255 - v; }   // phones: dark specks on clear, laid on top normally (same look, no blending)
+      else { img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255; }
     }
     g.putImageData(img, 0, 0);
     return `url(${c.toDataURL()})`;
@@ -1163,7 +1182,7 @@
       if (EYES_ON_BEAT) drawEyes();
       beat++;
     }, EYES_STEP_MS);
-    setInterval(grainStep, GRAIN.everyMs);
+    if (!isPhone) setInterval(grainStep, GRAIN.everyMs);   // phones: still grain
   }
 
   /* ---------- Eyes ---------- */
@@ -1180,17 +1199,22 @@
     const topmost = Math.max(...ARC.angles.map(a => -Math.sin(a * Math.PI / 180)));
     const capH = (caption.getBoundingClientRect().height || 22) + 6;
     const foot = document.querySelector('.foot-list a').getBoundingClientRect();
-    const wanted = Math.min(innerHeight * SIZING.faceOfHeight, SIZING.faceMax);
+    const big = BIG_DESKTOP.matches;
+    const wanted = Math.min(innerHeight * (big ? SIZING.faceOfHeightBig : SIZING.faceOfHeight), SIZING.faceMax);
     // icons are sized from the head (not the screen width) so the balance matches a square window everywhere;
     // sizes snap to whole steps of the icon grid so the pixels stay crisp
-    const step = devicePixelRatio >= 2 ? 34 : 68;
-    const minIcon = step === 68 ? 136 : 102; // smallest crisp size: 2x the grid on standard screens, 1.5x on retina
-    const iconFor = fh => Math.max(minIcon, Math.round(fh * SIZING.iconToFace / step) * step);
-    const faceTopFor = ic => head.bottom + SIZING.belowTitle + ARC.drop + ic / 2 + (ic / 2) * topmost + 6;
-    const roomFor = ic => foot.top - 34 - capH - faceTopFor(ic); // keep clear air above the footer
+    const step = (devicePixelRatio >= 2 || BIG_DESKTOP.matches) ? 34 : 68;   // full-size desktop: finer size steps so the bigger icons fit
+    const minIcon = step === 68 || BIG_DESKTOP.matches ? 136 : 102; // smallest crisp size: 2x the grid on standard screens, 1.5x on retina
+    const ratio = BIG_DESKTOP.matches ? SIZING.iconToFaceBig : SIZING.iconToFace;   // full-size desktop windows: bigger icons
+    const iconFor = fh => Math.max(minIcon, Math.round(fh * ratio / step) * step);
+    const faceTopFor = ic => head.bottom + SIZING.belowTitle + ARC.drop + ic / 2 + (ic / 2) * topmost + 6 + (big ? SIZING.faceDropBig : 0);
+    // keep clear air above the footer; on full-size desktop the face sits in the open middle, so it only needs to clear the screen's bottom edge
+    const screenBottom = document.querySelector('.tv .vignette').getBoundingClientRect().bottom;
+    const roomFor = ic => (big ? screenBottom - 30 : foot.top - 34) - capH - faceTopFor(ic);
     let faceH = wanted, icon = iconFor(faceH);
     for (let k = 0; k < 4; k++) { faceH = Math.max(200, Math.min(wanted, roomFor(icon))); icon = iconFor(faceH); }
     faceH = Math.max(200, Math.min(wanted, roomFor(icon)));
+    if (BIG_DESKTOP.matches) icon = Math.max(150, Math.round(icon * 0.94));   // full-size desktop: a touch smaller than the step, never below 150px
     rootStyle.setProperty('--icon', icon + 'px');
     const arcTopCentre = head.bottom + SIZING.belowTitle + ARC.drop + icon / 2;
     const faceTop = faceTopFor(icon);
@@ -1204,9 +1228,24 @@
     objectEls.forEach((a, i) => {
       const t = (ARC.angles.at(i) ?? 270) * Math.PI / 180;
       const x = Math.min(innerWidth - pad, Math.max(pad, cx + rx * Math.cos(t)));
-      const y = cy + ry * Math.sin(t);
+      const tw = BIG_DESKTOP.matches ? ICON_TWEAKS[a.dataset.key] : null;
+      const y = cy + ry * Math.sin(t) + (tw ? icon * tw.down : 0);
       a.style.left = Math.round(x) + 'px'; a.style.top = Math.round(y) + 'px';
+      a.style.setProperty('--icon-scale', tw ? tw.scale : 1);
     });
+    if (BIG_DESKTOP.matches) {   // bring all the icons up together, as far as the top one can go and still keep clear air under the welcome line
+      const tops = objectEls.map(a => a.querySelector('.art').getBoundingClientRect().top);
+      const lift = Math.max(0, Math.min(icon * ICON_LIFT, Math.min(...tops) - (head.bottom + 28)));
+      objectEls.forEach(a => { a.style.top = Math.round(parseFloat(a.style.top) - lift) + 'px'; });
+    }
+    if (big) {   // full-size desktop: no icon may touch the corner lines or the footer links; lift any that would, just enough
+      const blockers = [document.querySelector('.about-now'), document.querySelector('.foot')].filter(Boolean).map(e => e.getBoundingClientRect());
+      objectEls.forEach(a => {
+        const r = a.querySelector('.art').getBoundingClientRect();
+        const lift = Math.max(0, ...blockers.filter(b => r.left < b.right && b.left < r.right).map(b => r.bottom - (b.top - 16)));
+        if (lift > 0) a.style.top = Math.round(parseFloat(a.style.top) - lift) + 'px';
+      });
+    }
     measure();
     // centre the vignette on the head (coordinates are inside the screen area)
     const vg = document.querySelector('.tv .vignette').getBoundingClientRect();
@@ -1256,7 +1295,8 @@
       cur[k].x += (tx - cur[k].x) * ease; cur[k].y += (ty - cur[k].y) * ease;
     });
     if (!EYES_ON_BEAT || reduceMotion) drawEyes();
-    requestAnimationFrame(frame);
+    if (isPhone) setTimeout(() => requestAnimationFrame(frame), 80);   // phones: no cursor to follow, so about 12 updates a second is plenty
+    else requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
 
