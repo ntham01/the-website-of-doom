@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>/* touch devices (phones and tablets, even in "desktop site" mode) get the light version of the site */
+(function(){var n=navigator,u=n.userAgent||'',t=(window.matchMedia&&matchMedia('(pointer: coarse)').matches)||/Mobi|Android|iPhone|iPad|iPod|Silk|Kindle/i.test(u)||(/Macintosh/.test(u)&&n.maxTouchPoints>1);if(t)document.documentElement.classList.add('touch');})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Writings — Nathaniel “Chuch” Tham</title>
@@ -207,6 +209,7 @@
   .st-wrap .win:not(.seen) { opacity: 0; }
   .st-wrap .win:not(.seen), .st-wrap .win.seen { transition-duration: 270ms, 360ms, 360ms, 360ms; transition-timing-function: steps(3), steps(4), steps(4), steps(4); }
   .st-wrap .win-btns, .st-text { filter: var(--fxf) url(#fringe-more); }
+  .st-text.art { filter: var(--fxf); }   /* article text: the tint without the heavy fringe, so it reads lighter */
   .st-wrap .win-body { padding: 16px 20px 18px; }
 
   .st-list { display: flex; flex-direction: column; gap: clamp(14px, 2vh, 22px); max-width: 980px; margin: 0 auto; padding: clamp(14px, 2.2vh, 26px) 6px 24px; }
@@ -251,11 +254,12 @@
   /* ---------- Phones and tablets: lighter effects, so scrolling stays smooth ----------
      The big surfaces skip the colour-fringe effect (costly to redraw on a phone), windows don't start blurred,
      and the music player's pixel effect (which Safari can't draw) is off. Text and covers keep their look. */
-  @media (hover: none) and (pointer: coarse) {
-    .fx, .paper, .win::before, .win::after, .win-bar::before, .win-body::before, .modal-backdrop { filter: none !important; }
-    .win { filter: none !important; }
-    .player .pl-row, .player .pctrl { filter: none !important; }
-  }
+  /* touch devices */
+    html.touch .fx, html.touch .paper, html.touch .win::before, html.touch .win::after, html.touch .win-bar::before, html.touch .win-body::before, html.touch .modal-backdrop { filter: none !important; }
+    html.touch .win { filter: none !important; }
+    html.touch .player .pl-row, html.touch .player .pctrl { filter: none !important; }
+  
+
   .is-safari .player .pl-row, .is-safari .player .pctrl { filter: none !important; }
 </style>
 </head>
@@ -389,6 +393,11 @@
      ================================================================== */
   const ARTICLES = [
       {
+          "title": "Life in Fast Forward: Reflecting on 3 months working in San Francisco.",
+          "preview": "Hey everyone. I delayed going back home a week early to make a personal video reflecting on my time in San Francisco so far, but I got sick recently…",
+          "page": "writing-life-in-fast-forward.html"
+      },
+      {
           "title": "Why do I do what I do?",
           "preview": "My 4 values in life are: Living a multi-talented life, playing as many aspects of the game as possible, have a cool apartment. Being dependable and…",
           "page": "writing-why-do-i-do-what-i-do.html"
@@ -417,7 +426,7 @@
 
   /* ---------- Sound (shared on/off with the home page) ---------- */
   if (/^((?!chrome|android|crios|fxios).)*safari/i.test(navigator.userAgent)) document.documentElement.classList.add('is-safari');
-  const isPhone = matchMedia('(hover: none) and (pointer: coarse)').matches;   // a real touchscreen phone or tablet, not just a narrow window
+  const isPhone = document.documentElement.classList.contains('touch');   // set by the little script at the top of the page
   let soundOn = !isPhone && store.get('nt-sound-2') !== 'off', actx = null, master = null, noiseBuf = null; // phones: interface sounds off (music still plays)
   function unlockAudio() {
     if (actx) { if (actx.state === 'suspended') actx.resume(); return; }
