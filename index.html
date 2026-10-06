@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>/* touch devices (phones and tablets, even in "desktop site" mode) get the light version of the site */
+(function(){var n=navigator,u=n.userAgent||'',t=(window.matchMedia&&matchMedia('(pointer: coarse)').matches)||/Mobi|Android|iPhone|iPad|iPod|Silk|Kindle/i.test(u)||(/Macintosh/.test(u)&&n.maxTouchPoints>1);if(t)document.documentElement.classList.add('touch');})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>my_website_FINAL_34.html</title>
@@ -347,18 +349,24 @@
   /* ---------- Phones and tablets: no chroma option, and a much lighter page ----------
      The chroma picker is gone, nothing goes through the chroma effect, and the TV grain layer is drawn
      once and laid on top normally instead of being re-blended with the whole screen. */
-  @media (hover: none) and (pointer: coarse) {
-    .chroma-pick { display: none !important; }
-    .object .art, .start-word, .start-cat, .intro, .save, .toggles, .portrait, .foot, .about-now, .object .label { filter: none !important; }
-    .tv { mix-blend-mode: normal; }
-    .object, .boil, [data-boil] { will-change: translate; }
-  }
+  /* touch devices */
+    html.touch .chroma-pick { display: none !important; }
+    html.touch .object .art, html.touch .start-word, html.touch .start-cat, html.touch .intro, html.touch .save, html.touch .toggles, html.touch .portrait, html.touch .foot, html.touch .about-now, html.touch .object .label { filter: none !important; }
+    html.touch .tv { mix-blend-mode: normal; }
+    /* moving grain on phones: the grain layer is a little oversized and jumps between spots, run by the graphics chip */
+    html.touch .tv .grain { inset: -220px; will-change: transform; animation: grain-jump 0.84s steps(1) infinite; }
+    @keyframes grain-jump { 0% { transform: translate(0, 0); } 16.6% { transform: translate(-97px, 61px); } 33.3% { transform: translate(53px, -118px); }
+      50% { transform: translate(-151px, -37px); } 66.6% { transform: translate(129px, 88px); } 83.3% { transform: translate(-41px, 173px); } }
+    html.touch .object, html.touch .boil, html.touch [data-boil] { will-change: translate; }
+  
+
   /* ---------- Phones and tablets: lighter effects ----------
      The opening's full-page mosaic and the colour fringe on the big layers are costly to draw on a phone; skip them there. */
-  @media (hover: none) and (pointer: coarse) {
-    .stage { filter: none !important; }
-    .intro, .save, .toggles, .portrait, .foot, .chroma-pick, .about-now, .object .label { filter: none !important; }
-  }
+  /* touch devices */
+    html.touch .stage { filter: none !important; }
+    html.touch .intro, html.touch .save, html.touch .toggles, html.touch .portrait, html.touch .foot, html.touch .chroma-pick, html.touch .about-now, html.touch .object .label { filter: none !important; }
+  
+
 </style>
 </head>
 <body>
@@ -830,7 +838,7 @@
   document.documentElement.classList.remove('dark');
 
   /* ---------- Sound ---------- */
-  const isPhone = matchMedia('(hover: none) and (pointer: coarse)').matches;   // a real touchscreen phone or tablet, not just a narrow window
+  const isPhone = document.documentElement.classList.contains('touch');   // set by the little script at the top of the page
   let soundOn = !isPhone && store.get('localStorage', 'nt-sound-2') !== 'off'; // phones: interface sounds off
   const soundBtn = $('.sound'), soundText = $('.sound-text');
   soundBtn.setAttribute('aria-pressed', String(soundOn));
@@ -1182,7 +1190,7 @@
       if (EYES_ON_BEAT) drawEyes();
       beat++;
     }, EYES_STEP_MS);
-    if (!isPhone) setInterval(grainStep, GRAIN.everyMs);   // phones: still grain
+    if (!isPhone) setInterval(grainStep, GRAIN.everyMs);   // phones: the grain moves by a stepped animation instead (see the phone styles), which costs almost nothing
   }
 
   /* ---------- Eyes ---------- */
