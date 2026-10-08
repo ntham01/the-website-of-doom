@@ -339,6 +339,23 @@
 
   .is-safari .player .pl-row, .is-safari .player .pctrl { filter: none !important; }
   html.touch .st-text, html.touch .st-text.art { filter: none !important; }   /* phones: long articles under an effect can render blank on iPhone */
+
+  /* phone-even-margins: one gutter on every page, contents a touch smaller */
+  @media (max-width: 900px), (pointer: coarse) and (max-width: 1100px) {
+    .page { padding-left: 28px !important; padding-right: 28px !important; }
+    .page h1 { font-size: 34px !important; }
+    .page .lede { font-size: 14px !important; }
+    .page .win-title { font-size: 15px !important; }
+    .page .desc, .page .more, .page .st-preview, .page .tz-readout, .page .tz-lede { font-size: 15px !important; }
+    .page .impact, .page .follow { font-size: 14px !important; }
+    .page .st-row h2 { font-size: 20px !important; }
+    .page .ct-label { font-size: 16px !important; }
+    .page .art p { font-size: 15.5px !important; }
+    .page .art .art-note { font-size: 14.5px !important; }
+    .page .art .art-end { font-size: 14px !important; }
+    .page .art .art-title { font-size: 29px !important; }
+    .page .art .art-h { font-size: 20px !important; }
+  }
 </style>
 </head>
 <body>

@@ -368,6 +368,20 @@
     html.touch .intro, html.touch .save, html.touch .toggles, html.touch .portrait, html.touch .foot, html.touch .chroma-pick, html.touch .about-now, html.touch .object .label { filter: none !important; }
   
 
+
+  /* footer icons link too (same targets as their words) */
+  .foot a.foot-ic { display: block; border-bottom: 0; }
+  .foot-list li:has(a.foot-ic:hover) a:not(.foot-ic) { border-bottom-color: var(--ink); }
+  /* phone-even-margins: same gutter as every other page, contents a touch smaller */
+  @media (max-width: 900px), (pointer: coarse) and (max-width: 1100px) {
+    .stage { padding-left: 28px !important; padding-right: 28px !important; }
+    .intro h1 { font-size: 40px !important; }
+    .blurb { font-size: 15px !important; }
+    .welcome { font-size: 18px !important; }
+    .object .label .text { font-size: 16px !important; }
+    .object .art { width: 128px !important; }
+    .foot { font-size: 14px !important; }
+  }
 </style>
 </head>
 <body>
@@ -492,10 +506,10 @@
   <nav class="objects" aria-label="Sections"></nav>
   <footer class="foot">
     <ul class="foot-list">
-      <li><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAYAAACpUE5eAAAAgElEQVR42q2TUQ7AIAhDqbcwOu9/y+4LIwwXNfKl0MBLFbSnyBCUs4AekjapJRvF4Z1oT6GbwkM6ioikYZKSYoMMStYTA6Fskoa6FExeIf2QaT0iNK8WkP7VjIczzxCQTfUrHsLVueNhFzlPWUum88w0jjy8+g8jstUNMUC4vcsvLIErxXerpVQAAAAASUVORK5CYII=" style="--w: 20; --h: 13" alt="" aria-hidden="true"><a href="mailto:nathanieltham21@gmail.com">Email</a></li>
-      <li><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAA/UlEQVR42pWUwQ2DMAxFfyKWQAEGQFyQeqg6QCt14ErtElwQE4AYg176I9c4RPgS2SSO/3Owa+qAn23IWBVKzMuqww4APJNUoYybU+u8rFZ8AwDX1GFXyTQOh5XdH8+YlBW62/WyMfh5v3DG2q6PyQpm5Np2fZYRL5UV+ZQcMpjGAdM4/Pk8zGQAUKRu1zKlz8NUUoUSXgb1JoKVcglay/X6XczLGmW2Xb9jpyvdMToCbFWqv/vUO7HAWl2NFVmMpFx2LcUwds1iJG+WvCzbMaIczYRdsxjJ5IXOfPY3oXmpte36WFnuH9MK3G8ebRbonC9nkpfDSc+bnC/PfgG7o5/twlfioQAAAABJRU5ErkJggg==" style="--w: 18; --h: 18" alt="" aria-hidden="true"><a href="https://www.instagram.com/natfornutt/" target="_blank" rel="noopener">Instagram</a></li>
-      <li><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAA3klEQVR42q1UQQ6DIBAcSD9hUB9gvJj00PQBkPBgE/1EL01fAOEZ9GAwK6IF072Y2QzjMgywthEA4AGgFhWMdQhVgBmvRbURqUWFC9jfAjDW4fN+AQCk0qD9nC+PRQBgnsYiEWMdON0zLUrKwTzsWSq9inT9UOwZaxvh4yb9I8VnHrLn4+4DmKdxXSiV3uBU0clPPfpVSY9SJFpSaXT9sOmF0wWwTJQSiycKPHootM/j2B9NdMYr8ijOTczL9igVEcor9ujoBiQ9kkpneRR4xrol2Rfen32OALA/vEfsCzSX9/SsjfJUAAAAAElFTkSuQmCC" style="--w: 18; --h: 18" alt="" aria-hidden="true"><a href="https://linkedin.com/in/ntham" target="_blank" rel="noopener">LinkedIn</a></li>
-      <li><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAQCAYAAAD9L+QYAAAAyklEQVR42q2UwQ3CMAxFbW8ROckAiAsSB8QAIDEwEizRS9UJWnUMcyFVMKExbX1xrVY/71vpxxgYshKYKc8O+mGESmF6oCTq2UkS+NX7YZx9/+6SIDEGBs9OciJNuHBGAgDRRFvMACAYA0uNSHerA7IQPR936NrmbwcYA0uNoGubj+twud5MDshCoCs5qTkw7VyTWx2QdYd57faHSXizneeClp3j+XSU0nUrkde+0webdr50ptIPs8U8ZYtOw7XESZt0TK7Ikq/YfQFZMBVVAYOCFAAAAABJRU5ErkJggg==" style="--w: 23; --h: 16" alt="" aria-hidden="true"><a href="https://www.youtube.com/@natfornutt9529" target="_blank" rel="noopener">YouTube</a></li>
+      <li><a href="mailto:nathanieltham21@gmail.com" class="foot-ic" tabindex="-1" aria-hidden="true"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAYAAACpUE5eAAAAgElEQVR42q2TUQ7AIAhDqbcwOu9/y+4LIwwXNfKl0MBLFbSnyBCUs4AekjapJRvF4Z1oT6GbwkM6ioikYZKSYoMMStYTA6Fskoa6FExeIf2QaT0iNK8WkP7VjIczzxCQTfUrHsLVueNhFzlPWUum88w0jjy8+g8jstUNMUC4vcsvLIErxXerpVQAAAAASUVORK5CYII=" style="--w: 20; --h: 13" alt="" aria-hidden="true"></a><a href="mailto:nathanieltham21@gmail.com">Email</a></li>
+      <li><a href="https://www.instagram.com/natfornutt/" target="_blank" rel="noopener" class="foot-ic" tabindex="-1" aria-hidden="true"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAA/UlEQVR42pWUwQ2DMAxFfyKWQAEGQFyQeqg6QCt14ErtElwQE4AYg176I9c4RPgS2SSO/3Owa+qAn23IWBVKzMuqww4APJNUoYybU+u8rFZ8AwDX1GFXyTQOh5XdH8+YlBW62/WyMfh5v3DG2q6PyQpm5Np2fZYRL5UV+ZQcMpjGAdM4/Pk8zGQAUKRu1zKlz8NUUoUSXgb1JoKVcglay/X6XczLGmW2Xb9jpyvdMToCbFWqv/vUO7HAWl2NFVmMpFx2LcUwds1iJG+WvCzbMaIczYRdsxjJ5IXOfPY3oXmpte36WFnuH9MK3G8ebRbonC9nkpfDSc+bnC/PfgG7o5/twlfioQAAAABJRU5ErkJggg==" style="--w: 18; --h: 18" alt="" aria-hidden="true"></a><a href="https://www.instagram.com/natfornutt/" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://linkedin.com/in/ntham" target="_blank" rel="noopener" class="foot-ic" tabindex="-1" aria-hidden="true"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAA3klEQVR42q1UQQ6DIBAcSD9hUB9gvJj00PQBkPBgE/1EL01fAOEZ9GAwK6IF072Y2QzjMgywthEA4AGgFhWMdQhVgBmvRbURqUWFC9jfAjDW4fN+AQCk0qD9nC+PRQBgnsYiEWMdON0zLUrKwTzsWSq9inT9UOwZaxvh4yb9I8VnHrLn4+4DmKdxXSiV3uBU0clPPfpVSY9SJFpSaXT9sOmF0wWwTJQSiycKPHootM/j2B9NdMYr8ijOTczL9igVEcor9ujoBiQ9kkpneRR4xrol2Rfen32OALA/vEfsCzSX9/SsjfJUAAAAAElFTkSuQmCC" style="--w: 18; --h: 18" alt="" aria-hidden="true"></a><a href="https://linkedin.com/in/ntham" target="_blank" rel="noopener">LinkedIn</a></li>
+      <li><a href="https://www.youtube.com/@natfornutt9529" target="_blank" rel="noopener" class="foot-ic" tabindex="-1" aria-hidden="true"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAQCAYAAAD9L+QYAAAAyklEQVR42q2UwQ3CMAxFbW8ROckAiAsSB8QAIDEwEizRS9UJWnUMcyFVMKExbX1xrVY/71vpxxgYshKYKc8O+mGESmF6oCTq2UkS+NX7YZx9/+6SIDEGBs9OciJNuHBGAgDRRFvMACAYA0uNSHerA7IQPR936NrmbwcYA0uNoGubj+twud5MDshCoCs5qTkw7VyTWx2QdYd57faHSXizneeClp3j+XSU0nUrkde+0webdr50ptIPs8U8ZYtOw7XESZt0TK7Ikq/YfQFZMBVVAYOCFAAAAABJRU5ErkJggg==" style="--w: 23; --h: 16" alt="" aria-hidden="true"></a><a href="https://www.youtube.com/@natfornutt9529" target="_blank" rel="noopener">YouTube</a></li>
     </ul>
   </footer>
 
@@ -1207,7 +1221,7 @@
     const head = document.querySelector('.welcome').getBoundingClientRect();
     const topmost = Math.max(...ARC.angles.map(a => -Math.sin(a * Math.PI / 180)));
     const capH = (caption.getBoundingClientRect().height || 22) + 6;
-    const foot = document.querySelector('.foot-list a').getBoundingClientRect();
+    const foot = document.querySelector('.foot-list a:not(.foot-ic)').getBoundingClientRect();
     const big = BIG_DESKTOP.matches;
     const wanted = Math.min(innerHeight * (big ? SIZING.faceOfHeightBig : SIZING.faceOfHeight), SIZING.faceMax);
     // icons are sized from the head (not the screen width) so the balance matches a square window everywhere;
