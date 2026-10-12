@@ -392,7 +392,11 @@ if(m==='lite'||(m!=='full'&&safari&&!d.classList.contains('touch')))d.classList.
   /* ---------- lite: Safari on a Mac ----------
      No SVG filters (the script at the end of <head> strips them); the red/blue chroma fringe is redrawn with plain text shadows,
      which Safari draws natively, and the film grain moves by a stepped animation on the graphics chip instead of being repainted every 110ms. */
-  html.lite { --fx: none !important; --fxf: none !important; --fx-base: none !important; --mosaic: brightness(1) !important; }
+  /* lite and phones: every SVG filter off (phones draw them in software, which is what makes scrolling heavy) */
+  html.lite, html.touch { --fx: none !important; --fxf: none !important; --fx-base: none !important; --mosaic: brightness(1) !important; }
+  /* phones: no tiny blurs on the player and window buttons, and the grain is laid on top normally instead of blended (same movement) */
+  html.touch .win-btns button::after, html.touch .pctrl svg { filter: none !important; }
+  html.touch .tv { mix-blend-mode: normal !important; }
   html.lite .win { filter: none !important; }
   html.lite .chroma-pick { display: none !important; }   /* the other chroma looks need the SVG filters */
   html.lite body { text-shadow: -1.5px 0 rgba(45, 91, 255, 0.3), 1.5px 0 rgba(255, 58, 46, 0.3); }
@@ -403,8 +407,8 @@ if(m==='lite'||(m!=='full'&&safari&&!d.classList.contains('touch')))d.classList.
     50% { transform: translate(-151px, -37px); } 66.6% { transform: translate(129px, 88px); } 83.3% { transform: translate(-41px, 173px); } }
   @media (prefers-reduced-motion: reduce) { html.lite .tv .grain { animation: none; } }
 </style>
-<script>/* lite: take every SVG filter out of the stylesheets (CSS-only filters such as blur or brightness stay) */
-(function(){if(!document.documentElement.classList.contains('lite'))return;var re=/url\(\s*["']?#[^)]*\)/g;
+<script>/* lite and phones: take every SVG filter out of the stylesheets (CSS-only filters such as blur or brightness stay) */
+(function(){var c=document.documentElement.classList;if(!c.contains('lite')&&!c.contains('touch'))return;var re=/url\(\s*["']?#[^)]*\)/g;
 function walk(list){for(var i=0;i<list.length;i++){var r=list[i];if(r.style){var f=r.style.getPropertyValue('filter');if(f&&/url\(\s*["']?#/.test(f)){var n=f.replace(re,'').replace(/,\s*\)/g,')').trim();r.style.setProperty('filter',n||'none',r.style.getPropertyPriority('filter'));}}if(r.cssRules)walk(r.cssRules);}}
 for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].cssRules);}catch(e){}}})();</script>
 </head>
