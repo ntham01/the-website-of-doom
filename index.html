@@ -608,6 +608,7 @@ for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].
   const SIZING = { faceOfHeightBig: 0.46, faceDropBig: 14, iconToFaceBig: 0.45, iconToFace: 0.34, faceOfHeight: 0.42, faceMax: 620, belowTitle: 46 }; // belowTitle: px of space between the titles and the top icon
   // full-size desktop only: individual icons a little bigger (scale) and lower (down, in icon heights)
   const ICON_TWEAKS = { headphones: { scale: 1.1, down: 0 }, telephone: { scale: 1.1, down: 0 } };   // full-size desktop: these two a bit bigger
+  const ICON_SHIFT = { typewriter: -0.12 };   // desktop: move these icons sideways by this many icon widths (minus = left), keeping air between the typewriter and the telephone
   const ICON_LIFT = 0.32;   // full-size desktop: all the icons sit this much higher (in icon heights), keeping clear air under the welcome line
   const ARC = { on: true, angles: [180, 225, 270, 315, 360], gap: 130, drop: 22 }; // drop = push the arc and head down (px)
   const SECTIONS_BUILT = false; // while false, clicking an object shows a "not built yet" screen
@@ -1275,7 +1276,7 @@ for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].
     const pad = icon / 2 + 24;
     objectEls.forEach((a, i) => {
       const t = (ARC.angles.at(i) ?? 270) * Math.PI / 180;
-      const x = Math.min(innerWidth - pad, Math.max(pad, cx + rx * Math.cos(t)));
+      const x = Math.min(innerWidth - pad, Math.max(pad, cx + rx * Math.cos(t) + icon * (isPhone ? 0 : (ICON_SHIFT[a.dataset.key] || 0))));
       const tw = BIG_DESKTOP.matches ? ICON_TWEAKS[a.dataset.key] : null;
       const y = cy + ry * Math.sin(t) + (tw ? icon * tw.down : 0);
       a.style.left = Math.round(x) + 'px'; a.style.top = Math.round(y) + 'px';
