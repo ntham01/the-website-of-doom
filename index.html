@@ -305,7 +305,8 @@ if(m==='lite'||(m!=='full'&&safari&&!d.classList.contains('touch')))d.classList.
   .door.top .door-grain { top: 0; }
   .door.bottom .door-grain { bottom: 0; }
   .opening.grained .door::after { content: ""; position: absolute; inset: 0; background: var(--scan); pointer-events: none; }
-  .start-cat { position: absolute; right: 14%; bottom: calc(100% - 1px); width: calc(26px * var(--cat-px, 4)); height: calc(15px * var(--cat-px, 4));
+  /* cat image: 26x15 pixel cat drawn at 4x, its edge pixels built like the start button (1px dark line, light/shade bevel, beige band) */
+  .start-cat { position: absolute; right: 14%; bottom: 100%; width: calc(26px * var(--cat-px, 4)); height: calc(15px * var(--cat-px, 4));
     image-rendering: pixelated; pointer-events: none; filter: var(--fxf); transform-origin: 50% 100%; animation: cat-breathe 2.4s steps(1) infinite; }   /* the pixel cat, lying on the button's top edge */
   @keyframes cat-breathe { 0%, 55% { transform: scaleY(1); } 56%, 100% { transform: scaleY(1.0667); } }   /* one pixel taller, then back: breathing */
   @media (max-width: 900px) { .start-cat { --cat-px: 3; } }
@@ -562,7 +563,7 @@ for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].
   </div>
 </div>
 
-<div class="start" role="button" tabindex="0" aria-label="Start"><canvas class="start-grain" aria-hidden="true"></canvas><div class="start-scan" aria-hidden="true"></div><span class="start-wrap" aria-hidden="true"><img class="start-cat" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAPCAYAAAD6Ud/mAAAAg0lEQVR42r2UsRWAIAxEL3kuQEHLNlo4sIVuY2vhCNoGniiQ4LX34OdCAqDQeexXqc9aSA6W+qyBjNNc7LMFRKbKFcEayLYukSeB0gMAsnj0LzkfiHtDilpnBVGNd60oV7nzgSwTmV72pqH1oNyTdJSfvCiR84F6DMKve0QtP0MtBABu3aBpeZjhaNwAAAAASUVORK5CYII="><span class="start-word">start</span></span></div>
+<div class="start" role="button" tabindex="0" aria-label="Start"><canvas class="start-grain" aria-hidden="true"></canvas><div class="start-scan" aria-hidden="true"></div><span class="start-wrap" aria-hidden="true"><img class="start-cat" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGgAAAA8CAYAAACKA/9AAAACtUlEQVR4nO2cQUojQRSG/wxRPMEIhuQKA7PzAM7CWwgqzGIuM2HIZiAL8QIisxgP4M4ghCxdKAozJxBdZBZDmk6luqtfuqrrr+73rWJS+Jr8ee/velVdPXSM0XCwzP/9+PTcY47/IezlcLKYz/Dt60kS8TspUEqoQOQ0Wn9jYNZ8ALi/uwUAfPp8uDHetyfVjd/3eTGsLOaz7PX722v2+v7uFju7ewCAyY/vGE+mdPE7IRAAPD89AAA+7h9Y32eNrx5ETusyyFbz399es1/u0Zfjtc8uL35Sx2+dQEBxzU8xfisFAoprfmrx1YPIST6DpDXfZDXu9Owc48lU3CurG99F8gIB/mr+tvOikJ7XCoEAfzV/23lRKM9TDyInuQyqW/Nvfv8q/dzlSTby8V3xpJ6UnEBAc/OcvCcVEXqelaRAQHPzHJcnhY6vHkQOXQb5rvl18Z0h5vX9/fNSOp5OIGDdY0xi9NZiQikQUFz7Y/XWYqEeRE70DHLNa7pOdIGA+Os3zFAIBMRfv2FFPYicxjNIPUdGlBKnnlOdaB6knlMN9SByVCByVCByVCByVCByNvZ8VVmPkWDuKxsNB8vFfKZ3cRZszwtZb7PL1mOqEvJ5m7Zi25dXOA9q6rkZZR3ze1cPIqcfqjdWtq9Me2/V6QPhemO2fWXae5OReVCouyqzpmrmyFAPIkfczXbt4zKJnTHSvdB199X5jqcZRI44g66urkXjT8/OpSGUHCKBbK0IF+PJNDv6RJGzIVCRx6wyR3qWzWg4WO7s7lXuTITeCx0a3/HUg8jpA/8bcyGR/P+ue5bp8T3p8sI2JU4yHkBnPcu63BD6zE7fnhV7XuWblecXebx6EDk0e7PzlHlW2zzKNa+kOxKzime1xaOSPBKzytk4eY9KzZNcnmOiHkSOCkSOCkTOP/1gcLGpDt7NAAAAAElFTkSuQmCC"><span class="start-word">start</span></span></div>
 
 <div class="opening" aria-hidden="true">
   <div class="door top"></div>
