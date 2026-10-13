@@ -338,6 +338,11 @@ if(m==='lite'||(m!=='full'&&safari&&!d.classList.contains('touch')))d.classList.
   html.taffy-peek .stage > :not(.paper) { opacity: 0 !important; pointer-events: none !important; }
   html.taffy-peek .paper::after { opacity: 1 !important; }
   html.taffy-peek, html.taffy-peek * { cursor: default; user-select: none; -webkit-user-select: none; }
+
+  /* Taffy mode: the category buttons and the side menu keep their outlines but drop the beige fill, so Taffy shows through */
+  html.taffy:not(.lite):not(.touch) .cats .winbtn, html.taffy:not(.lite):not(.touch) .cats .winbtn:hover,
+  html.taffy:not(.lite):not(.touch) .cats .winbtn[aria-pressed="true"] { background: transparent; }
+  html.taffy:not(.lite):not(.touch) .era::before { background: transparent; }
 </style>
 <script>/* lite and phones: take every SVG filter out of the stylesheets (CSS-only filters such as blur or brightness stay) */
 (function(){var c=document.documentElement.classList;if(!c.contains('lite')&&!c.contains('touch'))return;var re=/url\(\s*["']?#[^)]*\)/g;
