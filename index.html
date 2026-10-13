@@ -264,13 +264,13 @@ if(m==='lite'||(m!=='full'&&safari&&!d.classList.contains('touch')))d.classList.
      raised bevel, a lighter dithered face, and the stepped drop shadow (drawn light so it shows on black) */
   .start-word { position: relative; display: inline-block; font-family: "Redaction 20", "Redaction 35", Georgia, serif; font-weight: 700;
     font-size: clamp(24px, 2.4vw, 34px); letter-spacing: -0.005em; line-height: 1.15; color: #1e1d1b; user-select: none;
-    background: #d9d4c8; border: 1px solid #1e1d1b; box-shadow: inset 1px 1px 0 #f4f1ea, inset -1px -1px 0 #8b867c; padding: 3px;
+    background: #d9d4c8; border: 1px solid transparent;   /* no outline line: the beige frame runs to the edge */ box-shadow: inset 1px 1px 0 #f4f1ea, inset -2px -2px 0 #6e6a62;   /* harder grey shade on the bottom and right, same as the cat */ padding: 3px;
     filter: var(--fxf); }
   .start-word::after { content: ""; position: absolute; left: 5px; top: 5px; right: -5px; bottom: -5px; z-index: -1; pointer-events: none;
     background: repeating-conic-gradient(rgba(217, 212, 200, 0.42) 0 25%, transparent 0 50%) 0 0 / 2px 2px;
     clip-path: polygon(calc(100% - 5px) 0, 100% 0, 100% 100%, 0 100%, 0 calc(100% - 5px), calc(100% - 5px) calc(100% - 5px)); }
   .start-face { display: block; padding: 10px 40px 12px; background: #efebe2 repeating-conic-gradient(rgba(139, 134, 124, 0.16) 0 25%, transparent 0 50%) 0 0 / 2px 2px;
-    box-shadow: inset 1px 1px 0 #8b867c, inset -1px -1px 0 #f4f1ea; transition: background 180ms steps(2); }
+    box-shadow: 2px 2px 0 #6e6a62; transition: background 180ms steps(2); }   /* no outline; a hard grey drop shadow under the inner face */
   .start-word .sc { display: inline-block; min-width: 0.22em; text-align: center; }
   /* the word sits into the button: softer ink, a faint pressed-in highlight like the bevels, and the slightest softness */
   .start-face { color: #34312c; text-shadow: none;
@@ -282,16 +282,16 @@ if(m==='lite'||(m!=='full'&&safari&&!d.classList.contains('touch')))d.classList.
   .start-wrap { isolation: isolate; }
   .start-wrap:hover { animation: start-glow-hover 1.8s ease-in-out infinite; }
   .start-wrap:hover .start-face { background-color: #f7f4ed; }
-  .start-wrap:active .start-face { box-shadow: inset 1px 1px 0 #f4f1ea, inset -1px -1px 0 #8b867c; background-color: #e3dfd5; }
+  .start-wrap:active .start-face { background-color: #e3dfd5; }
   .start:focus { outline: none; }
   .start.going .start-wrap { animation: none; opacity: 0; transition: opacity 140ms ease; }
   /* dissolving in and out, with a soft blur at the faint end */
   @keyframes start-glow {
-    0%, 100% { filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.22)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.12)); }
-    50% { filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5)) drop-shadow(0 0 22px rgba(255, 255, 255, 0.3)); } }
+    0%, 100% { filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.13)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.07)); }
+    50% { filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.3)) drop-shadow(0 0 22px rgba(255, 255, 255, 0.18)); } }
   @keyframes start-glow-hover {
-    0%, 100% { filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.55)) drop-shadow(0 0 22px rgba(255, 255, 255, 0.32)); }
-    50% { filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.7)) drop-shadow(0 0 28px rgba(255, 255, 255, 0.42)); } }
+    0%, 100% { filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.33)) drop-shadow(0 0 22px rgba(255, 255, 255, 0.19)); }
+    50% { filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.42)) drop-shadow(0 0 28px rgba(255, 255, 255, 0.25)); } }
   /* an old screen struggling a little: mostly on, with uneven dips */
   @keyframes start-flicker {
     0% { opacity: 1; } 3% { opacity: 0.8; } 4% { opacity: 1; } 21% { opacity: 0.9; } 22% { opacity: 1; }
@@ -305,9 +305,14 @@ if(m==='lite'||(m!=='full'&&safari&&!d.classList.contains('touch')))d.classList.
   .door.top .door-grain { top: 0; }
   .door.bottom .door-grain { bottom: 0; }
   .opening.grained .door::after { content: ""; position: absolute; inset: 0; background: var(--scan); pointer-events: none; }
-  /* cat image: 26x15 pixel cat drawn at 4x, its edge pixels built like the start button (1px dark line, light/shade bevel, beige band) */
-  .start-cat { position: absolute; right: 14%; bottom: 100%; width: calc(26px * var(--cat-px, 4)); height: calc(15px * var(--cat-px, 4));
-    image-rendering: pixelated; pointer-events: none; filter: var(--fxf); transform-origin: 50% 100%; animation: cat-breathe 2.4s steps(1) infinite; }   /* the pixel cat, lying on the button's top edge */
+  /* cat image: 26x15 pixel cat drawn at 4x, its edge pixels built like the start button (grey edge, light top-left, harder 2px grey shade bottom-right, beige band) */
+  .start-cat { position: absolute; right: 14%; bottom: calc(100% + 1px);   /* a small gap between the cat and the button */ width: calc(26px * var(--cat-px, 4)); height: calc(15px * var(--cat-px, 4));
+    image-rendering: pixelated; pointer-events: none; filter: var(--fxf); transform-origin: 50% 100%; animation: cat-breathe 2.4s steps(1) infinite; }
+  /* the cat's eyes and inner ears sit on their own layer, softened slightly */
+  .start-cat-feat { filter: var(--fxf) blur(0.55px); }
+  html.lite .start-cat-feat { filter: blur(0.55px) !important; }
+  .start-face .sc { filter: blur(0.35px); }   /* start letters: softened to match the cat's eyes and ears */   /* the pixel cat, lying on the button's top edge */
+  .start-bloom { position: relative; display: inline-block; vertical-align: top; filter: url(#start-bloom); }   /* the light bleeds into the dark details too, not just outwards */
   @keyframes cat-breathe { 0%, 55% { transform: scaleY(1); } 56%, 100% { transform: scaleY(1.0667); } }   /* one pixel taller, then back: breathing */
   @media (max-width: 900px) { .start-cat { --cat-px: 3; } }
   @media (prefers-reduced-motion: reduce) { .start-word, .start-wrap, .start-cat { animation: none; } }
@@ -416,6 +421,13 @@ for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
+    <!-- start screen: a tight bloom, so the light of the button and cat bleeds softly into the edges of the dark letters, eyes and ears (centres stay dark) -->
+    <filter id="start-bloom" x="-25%" y="-90%" width="150%" height="210%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.2" result="b"/>
+      <feComponentTransfer in="b" result="bb"><feFuncR type="linear" slope="0.35"/><feFuncG type="linear" slope="0.35"/><feFuncB type="linear" slope="0.35"/><feFuncA type="linear" slope="0.35"/></feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="bb" mode="screen"/>
+    </filter>
+  
     <!-- chromatic aberration: coloured fringes appear just outside the edges of dark shapes
          (colour A on the left/top, colour B on the right/bottom), multiplied over the original -->
     <filter id="chroma" x="-4%" y="-4%" width="108%" height="108%" color-interpolation-filters="sRGB">
@@ -563,7 +575,7 @@ for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].
   </div>
 </div>
 
-<div class="start" role="button" tabindex="0" aria-label="Start"><canvas class="start-grain" aria-hidden="true"></canvas><div class="start-scan" aria-hidden="true"></div><span class="start-wrap" aria-hidden="true"><img class="start-cat" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGgAAAA8CAYAAACKA/9AAAACtUlEQVR4nO2cQUojQRSG/wxRPMEIhuQKA7PzAM7CWwgqzGIuM2HIZiAL8QIisxgP4M4ghCxdKAozJxBdZBZDmk6luqtfuqrrr+73rWJS+Jr8ee/velVdPXSM0XCwzP/9+PTcY47/IezlcLKYz/Dt60kS8TspUEqoQOQ0Wn9jYNZ8ALi/uwUAfPp8uDHetyfVjd/3eTGsLOaz7PX722v2+v7uFju7ewCAyY/vGE+mdPE7IRAAPD89AAA+7h9Y32eNrx5ETusyyFbz399es1/u0Zfjtc8uL35Sx2+dQEBxzU8xfisFAoprfmrx1YPIST6DpDXfZDXu9Owc48lU3CurG99F8gIB/mr+tvOikJ7XCoEAfzV/23lRKM9TDyInuQyqW/Nvfv8q/dzlSTby8V3xpJ6UnEBAc/OcvCcVEXqelaRAQHPzHJcnhY6vHkQOXQb5rvl18Z0h5vX9/fNSOp5OIGDdY0xi9NZiQikQUFz7Y/XWYqEeRE70DHLNa7pOdIGA+Os3zFAIBMRfv2FFPYicxjNIPUdGlBKnnlOdaB6knlMN9SByVCByVCByVCByVCByNvZ8VVmPkWDuKxsNB8vFfKZ3cRZszwtZb7PL1mOqEvJ5m7Zi25dXOA9q6rkZZR3ze1cPIqcfqjdWtq9Me2/V6QPhemO2fWXae5OReVCouyqzpmrmyFAPIkfczXbt4zKJnTHSvdB199X5jqcZRI44g66urkXjT8/OpSGUHCKBbK0IF+PJNDv6RJGzIVCRx6wyR3qWzWg4WO7s7lXuTITeCx0a3/HUg8jpA/8bcyGR/P+ue5bp8T3p8sI2JU4yHkBnPcu63BD6zE7fnhV7XuWblecXebx6EDk0e7PzlHlW2zzKNa+kOxKzime1xaOSPBKzytk4eY9KzZNcnmOiHkSOCkSOCkTOP/1gcLGpDt7NAAAAAElFTkSuQmCC"><span class="start-word">start</span></span></div>
+<div class="start" role="button" tabindex="0" aria-label="Start"><canvas class="start-grain" aria-hidden="true"></canvas><div class="start-scan" aria-hidden="true"></div><span class="start-wrap" aria-hidden="true"><span class="start-bloom"><img class="start-cat" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGgAAAA8CAYAAACKA/9AAAACeUlEQVR4nO2bQU/CQBCFnwYIv0ATo3+OqImS9KymSdsLF24maOLBn+YFJZGbiQcDh3pahNK1u8B237bzHZvCFF5nXmd2C7SM8SjOv7/meXQ7yKPbQc4e/7iOixJ2RwQiRwQi58j3BbhmPIrzm2GE58nj6tjl1TUAIElSXJyfAQCm7zMAwOPT60H/k33jdw55MczcDCMAwHLxszqWZSm6vT4A4OH+jjJ+awT6mL4BAE5Oz0qPs8YXDyKncRlUVvOXi5+tOzeU+I0TSFFW80OM31iBdDU/tPjiQeQEn0H71nx1XpalSJIU41GcA+Z9kWvPC14gxSFq/j59kSvPa4xAh6r5u/ZFrjxPPIic4DLIdc3XedJ/uOyzghNIUUefs+5JOlz3WcEKVFefU+VJruOLB5FDl0FlHlOkztmar0mEgk4ghfKYIr5ma76gFUhX+33f0XUjHkSO9wzyvX7DjneBFL7Xb1ihEcj3+g0r4kHk1J5B4jl2eCtx4jlmeBNIPMcM8SByRCByRCByRCByRCBytp7iTNZjTHD1vk3TqNqXp33M1q3HmOL6fZsmUrYvTytQXe/NCJsU/3fxIHI6rmZj/+0rk9mbOasS52I2VravTGZvdqwEcjUbK9ZUyRw7xIPIsZ5mzz9nVudLxuyHZBA51hk0eXqxOj/LUtsQwhpWGZQkqXWAXT4j/LGVQTqPUZljO1sbj+K82+sbTybEszYRDyKnM32fOR1s2n5/2z2r6PF0GdRmzyr77XRrNWo22Ja3G5Tn6zyeLoOETWj2ZiuqPKtpHlXVVwaXQU3yKJPfQudBVVR5VCiY9pXBZVDboPOgKlz3bWxIBpHzC+OXb+cL96I7AAAAAElFTkSuQmCC"><img class="start-cat start-cat-feat" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGgAAAA8CAYAAACKA/9AAAAAlElEQVR4nO3bQQqEMAwF0Dh4HDcDc/8TCG68j26HbkTUGut7O1cJfloIpBEAAADv0t3dQG2/77D8f4/TXPUf7K3/ubYdjhJQcgJKrr+7gauVd/7T6jtByQkoOQEl19wctHXn1557SuagxggoOQEBAAAAAAAAAAAA1TS3m13a+z7n6O722fVsliYnoOQEBAAAAAAQESufsRtAvRbaqwAAAABJRU5ErkJggg=="><span class="start-word">start</span></span></span></div>
 
 <div class="opening" aria-hidden="true">
   <div class="door top"></div>
