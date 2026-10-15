@@ -174,7 +174,7 @@ if(m==='lite'||(m!=='full'&&safari&&!d.classList.contains('touch')))d.classList.
   .object .label .bar i:nth-child(3)::after { content: "×"; font: 700 10px/1 Arial, sans-serif; color: #1e1d1b; margin-top: -1px; }
   .object .label .text { display: block; padding: 7px 18px 8px; text-align: center; font-size: 18px; font-weight: 700; letter-spacing: -0.005em; line-height: 1.2; background: #efebe2 repeating-conic-gradient(rgba(139, 134, 124, 0.16) 0 25%, transparent 0 50%) 0 0 / 2px 2px; margin-top: 2px; box-shadow: inset 1px 1px 0 #8b867c, inset -1px -1px 0 #f4f1ea; }
   .object:hover .label, .object:focus-visible .label { opacity: 1; }
-  .object .label { zoom: var(--label-s, 1); }   /* desktop: hover windows shrink a little on shorter screens (set in layoutArc) */
+  .object .label { zoom: var(--label-s, 1); }   /* desktop: every hover window shares one size, a little smaller on shorter screens (set in layoutArc) */
 
   /* ---------- Speech box (click the head) ---------- */
   .speech {
@@ -1448,37 +1448,19 @@ for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].
         if (lift > 0) a.style.top = Math.round(parseFloat(a.style.top) - lift) + 'px';
       });
     }
-    // hover windows (always under their icon): scaled with the screen's height, and shrunk a little more if one would come within
-    // 24px of the corner lines or the footer links. If that still isn't enough, all the icons move up (less space under the title),
-    // and only as a last resort does the window shrink further.
-    const labelBlockers = [document.querySelector('.about-now'), document.querySelector('.foot')].filter(Boolean).map(e => e.getBoundingClientRect());
-    const labelBase = Math.max(0.78, Math.min(1, innerHeight / 1000)), LABEL_MIN = 0.72, LABEL_FLOOR = 0.6;
-    const labelOver = lab => { const r = lab.getBoundingClientRect();
-      return { r, over: Math.max(0, ...labelBlockers.filter(b => b.width && r.left < b.right && b.left < r.right).map(b => r.bottom - (b.top - 24))) }; };
-    const fitLabel = (a, lab, min) => {
-      let s = parseFloat(a.style.getPropertyValue('--label-s')) || labelBase;
-      for (let k = 0; k < 3; k++) {
-        const { r, over } = labelOver(lab);
-        if (over < 0.5 || s <= min) break;
-        s = Math.max(min, s * (r.height - over) / r.height);
-        a.style.setProperty('--label-s', s.toFixed(3));
+    // hover windows: all the same size, scaled with the screen's height (never below 85%). If one would then come within 24px of
+    // the corner lines or the footer links, all the icons move up together (less space under the title), as far as there's room.
+    if (isPhone) rootStyle.removeProperty('--label-s');
+    else {
+      rootStyle.setProperty('--label-s', Math.max(0.85, Math.min(1, innerHeight / 1000)).toFixed(3));
+      const labelBlockers = [document.querySelector('.about-now'), document.querySelector('.foot')].filter(Boolean).map(e => e.getBoundingClientRect());
+      const need = Math.max(0, ...objectEls.map(a => { const lab = a.querySelector('.label'); if (!lab) return 0; const r = lab.getBoundingClientRect();
+        return Math.max(0, ...labelBlockers.filter(b => b.width && r.left < b.right && b.left < r.right).map(b => r.bottom - (b.top - 24))); }));
+      if (need > 0) {
+        const topArt = Math.min(...objectEls.map(a => a.querySelector('.art').getBoundingClientRect().top));
+        const lift = Math.min(need, Math.max(0, topArt - (head.bottom + 14)));   // keep a little air under the welcome line
+        if (lift > 0) objectEls.forEach(a => { a.style.top = Math.round(parseFloat(a.style.top) - lift) + 'px'; });
       }
-      return labelOver(lab).over;
-    };
-    let iconLift = 0;
-    objectEls.forEach(a => {
-      const lab = a.querySelector('.label'); if (!lab) return;
-      a.classList.remove('label-left', 'label-right');
-      if (isPhone) { a.style.removeProperty('--label-s'); return; }
-      a.style.setProperty('--label-s', labelBase.toFixed(3));
-      iconLift = Math.max(iconLift, fitLabel(a, lab, LABEL_MIN));
-    });
-    if (iconLift > 0 && !isPhone) {
-      const topArt = Math.min(...objectEls.map(a => a.querySelector('.art').getBoundingClientRect().top));
-      const room = Math.max(0, topArt - (head.bottom + 14));   // keep a little air under the welcome line
-      const lift = Math.min(iconLift, room);
-      if (lift > 0) objectEls.forEach(a => { a.style.top = Math.round(parseFloat(a.style.top) - lift) + 'px'; });
-      objectEls.forEach(a => { const lab = a.querySelector('.label'); if (lab) fitLabel(a, lab, LABEL_FLOOR); });
     }
     measure();
     // centre the vignette on the head (coordinates are inside the screen area)
