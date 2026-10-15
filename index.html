@@ -259,7 +259,14 @@ if(m==='lite'||(m!=='full'&&safari&&!d.classList.contains('touch')))d.classList.
   .start-grain { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; pointer-events: none; }
   .start-scan, .door { --scan: repeating-linear-gradient(to bottom, rgba(255,255,255,0.025) 0 1px, transparent 1px 3px); }
   .start-scan { position: absolute; inset: 0; pointer-events: none; background: var(--scan); }
-  .start-wrap { position: relative; display: inline-block; animation: start-glow 3.6s ease-in-out infinite; } /* fully visible; only the glow around it breathes */
+  /* fully visible; only the glow around it breathes. --b is the breath (0..1, animated) and --h is hover (0..1, eased in and out),
+     so hovering blends smoothly into the brighter glow instead of jumping to another animation */
+  @property --b { syntax: '<number>'; inherits: false; initial-value: 0; }
+  @property --h { syntax: '<number>'; inherits: false; initial-value: 0; }
+  .start-wrap { position: relative; display: inline-block; --h: 0; transition: --h 650ms cubic-bezier(.25, .1, .25, 1);
+    animation: start-glow 3.2s ease-in-out infinite;
+    filter: drop-shadow(0 0 calc((3 + 3 * var(--b) + var(--h) * 3 - var(--h) * var(--b)) * 1px) rgba(255, 255, 255, calc(0.13 + 0.17 * var(--b) + var(--h) * 0.2 - var(--h) * var(--b) * 0.08)))
+            drop-shadow(0 0 calc((10 + 12 * var(--b) + var(--h) * 12 - var(--h) * var(--b) * 6) * 1px) rgba(255, 255, 255, calc(0.07 + 0.11 * var(--b) + var(--h) * 0.12 - var(--h) * var(--b) * 0.05))); }
   /* "start" as a button, in the same style as the site's windows and label boxes: beige frame, dark outline,
      raised bevel, a lighter dithered face, and the stepped drop shadow (drawn light so it shows on black) */
   .start-word { position: relative; display: inline-block; font-family: "Redaction 20", "Redaction 35", Georgia, serif; font-weight: 700;
@@ -274,24 +281,19 @@ if(m==='lite'||(m!=='full'&&safari&&!d.classList.contains('touch')))d.classList.
   .start-word .sc { display: inline-block; min-width: 0.22em; text-align: center; }
   /* the word sits into the button: softer ink, a faint pressed-in highlight like the bevels, and the slightest softness */
   .start-face { color: #34312c; text-shadow: none;
-    transition: background 180ms steps(2), color 220ms ease, text-shadow 260ms ease; }
+    transition: background-color 500ms ease, color 500ms ease, text-shadow 600ms cubic-bezier(.25, .1, .25, 1); }
   /* hover: the letters glow warm */
   .start-wrap:hover .start-face { color: #2a2723;
     text-shadow: 0 0 3px rgba(255, 255, 255, 0.95), 0 0 9px rgba(255, 255, 255, 0.8); }   /* hover: a soft white glow, no colour */
   .start-wrap:active .start-face { text-shadow: 0 0 4px rgba(255, 255, 255, 1), 0 0 12px rgba(255, 255, 255, 0.9); }
   .start-wrap { isolation: isolate; }
-  .start-wrap:hover { animation: start-glow-hover 1.8s ease-in-out infinite; }
+  .start-wrap:hover { --h: 1; }
   .start-wrap:hover .start-face { background-color: #f7f4ed; }
   .start-wrap:active .start-face { background-color: #e3dfd5; }
   .start:focus { outline: none; }
   .start.going .start-wrap { animation: none; opacity: 0; transition: opacity 140ms ease; }
   /* dissolving in and out, with a soft blur at the faint end */
-  @keyframes start-glow {
-    0%, 100% { filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.13)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.07)); }
-    50% { filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.3)) drop-shadow(0 0 22px rgba(255, 255, 255, 0.18)); } }
-  @keyframes start-glow-hover {
-    0%, 100% { filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.33)) drop-shadow(0 0 22px rgba(255, 255, 255, 0.19)); }
-    50% { filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.42)) drop-shadow(0 0 28px rgba(255, 255, 255, 0.25)); } }
+  @keyframes start-glow { 0%, 100% { --b: 0; } 50% { --b: 1; } }
   /* an old screen struggling a little: mostly on, with uneven dips */
   @keyframes start-flicker {
     0% { opacity: 1; } 3% { opacity: 0.8; } 4% { opacity: 1; } 21% { opacity: 0.9; } 22% { opacity: 1; }
@@ -449,6 +451,22 @@ if(m==='lite'||(m!=='full'&&safari&&!d.classList.contains('touch')))d.classList.
   .taffy-hint-text { font-size: 13.5px; line-height: 1.3; text-align: center; color: var(--ink); opacity: 0.85; }
   @media (max-width: 900px), (pointer: coarse) and (max-width: 1100px) { html.taffy .taffy-hint { display: none !important; } }
   @media (prefers-reduced-motion: reduce) { .taffy-ring { animation: none; } }
+
+  /* full-name button: just the pixel dots at the end of the name, soft and see-through. It's always there (invisible) so hovering
+     its spot shows it, as does hovering the name; no sliding: when the name changes it blinks out and reappears at the new end */
+  .name-more { position: absolute; z-index: 2; transform: translate(0, -100%); box-sizing: border-box; height: 25px; padding: 7px 6px; margin: 0;
+    background: none; border: 0; box-shadow: none; color: var(--ink); fill: currentColor; cursor: pointer; filter: var(--fxf);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 160ms ease 120ms; }   /* leaving: a short grace period (to reach the dots), then a quick fade */
+  /* a slightly bigger hit area around the dots, which also bridges the gap back to the name */
+  .name-more::before { content: ""; position: absolute; top: -8px; bottom: -6px; left: -14px; right: -10px; }
+  .name-more.show, .name-more:hover, .name-more:focus-visible, .name-more[aria-expanded="true"] { opacity: 0.45; transition: opacity 110ms ease-out; }   /* appears almost at once */
+  .name-more.swap { opacity: 0 !important; transition: none !important; }   /* blank while the name swaps */
+  .name-more:focus-visible { outline: 1px dotted var(--ink); outline-offset: 2px; }
+  /* phones: the full-name option is desktop only */
+  @media (max-width: 900px), (pointer: coarse) and (max-width: 1100px) {
+    .name-more { display: none !important; }   /* phones: no full-name option */
+  }
 </style>
 <script>/* lite and phones: take every SVG filter out of the stylesheets (CSS-only filters such as blur or brightness stay) */
 (function(){var c=document.documentElement.classList;if(!c.contains('lite')&&!c.contains('touch'))return;var re=/url\(\s*["']?#[^)]*\)/g;
@@ -557,6 +575,7 @@ for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].
     <p class="blurb" data-decode>Storyteller and filmmaker from Vancouver, Canada.</p>
     <p class="welcome" data-decode>Welcome to <b>“my_website_FINAL_34.html”</b></p>
   </header>
+  <button type="button" class="name-more" aria-label="Show my full name" aria-expanded="false"><svg viewBox="0 0 11 3" width="19" height="5" aria-hidden="true" shape-rendering="crispEdges"><rect x="0" width="3" height="3"/><rect x="4" width="3" height="3"/><rect x="8" width="3" height="3"/></svg></button>
 
   <div class="save">
     <button type="button" aria-label="Save"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA1UlEQVR42q2TPw6CMBjFH4YztJ1M9CQOxgswkXA8EycvYBycCAlXgDZ2AuYy44A0X6v8i/6W0pbv9X2vaZDEUQfC+XIN/DW656+Fw0ea5TCmBZ0LzlDVDQRnKEoFAEjiqKNCGwCQ6gnBmaNsTIuiVHakUIfWQVU3k1YpaZZbJ1ZAcIYKDU7HQzdXTEUcB4Izp/c5bvdHn8FQ7I9LcBxIpQOpNPpg9WjRfrftnFv4hdAG+O6Zqn9DKh18CNDA/B8WZzDW49TpowJrXIRLTp7iP7dAX+FaXnS4ddwvTEcgAAAAAElFTkSuQmCC" alt=""></button>
@@ -662,7 +681,7 @@ for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].
   const SIZING = { faceOfHeightBig: 0.46, faceDropBig: 14, iconToFaceBig: 0.45, iconToFace: 0.34, faceOfHeight: 0.42, faceMax: 620, belowTitle: 46 }; // belowTitle: px of space between the titles and the top icon
   // full-size desktop only: individual icons a little bigger (scale) and lower (down, in icon heights)
   const ICON_TWEAKS = { headphones: { scale: 1.1, down: 0 }, telephone: { scale: 1.1, down: 0 } };   // full-size desktop: these two a bit bigger
-  const ICON_SHIFT = { typewriter: -0.12, radio: 0.12 };   // desktop: move these icons sideways by this many icon widths (minus = left), keeping air between the typewriter and the telephone
+  const ICON_SHIFT = { typewriter: -0.26, radio: 0.26 };   // desktop: move these icons sideways by this many icon widths (minus = left), keeping air between the typewriter and the telephone
   const ICON_LIFT = 0.32;   // full-size desktop: all the icons sit this much higher (in icon heights), keeping clear air under the welcome line
   const ARC = { on: true, angles: [180, 225, 270, 315, 360], gap: 130, drop: 22 }; // drop = push the arc and head down (px)
   const SECTIONS_BUILT = false; // while false, clicking an object shows a "not built yet" screen
@@ -917,6 +936,78 @@ for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].
     return d;
   }
   document.querySelectorAll('[data-decode]').forEach(el => { if (el !== caption) hookDecode(el); });
+
+  /* ---------- Full name: the "…" button at the end of the name ---------- */
+  // Desktop: the full name shrinks to fit one line in the same height, so nothing below it moves. Phones: it just wraps.
+  const nameEl = document.querySelector('.intro h1'), nameBtn = document.querySelector('.name-more');
+  const NAME_SHORT = 'Nathaniel “<i>Chuch</i>”&nbsp;Tham';
+  const NAME_FULL = 'Nathaniel “<i>Chuch</i>” “<i>nAtfornUtt</i>” Aaron En&nbsp;Jian&nbsp;Tham';
+  let nameFull = false;
+  const NAME_BTN_MORE = '<svg viewBox="0 0 11 3" width="19" height="5" aria-hidden="true" shape-rendering="crispEdges"><rect x="0" width="3" height="3"/><rect x="4" width="3" height="3"/><rect x="8" width="3" height="3"/></svg>', NAME_BTN_LESS = '<svg viewBox="0 0 5 9" width="6" height="11" aria-hidden="true" shape-rendering="crispEdges"><path d="M3 0h2v1h-1v1h-1v1h-1v1h-1v1h1v1h1v1h1v1h1v1h-2v-1h-1v-1h-1v-1h-1v-1h-1v-1h1v-1h1v-1h1v-1h1z"/></svg>';
+  const nameStacked = () => matchMedia('(max-width: 900px), (pointer: coarse) and (max-width: 1100px)').matches;
+  function fitName() {
+    if (!nameEl) return;
+    ['font-size', 'white-space', 'height', 'display', 'align-items', 'justify-content', 'padding-top', 'box-sizing'].forEach(p => nameEl.style.removeProperty(p));
+    if (!nameFull) return;
+    const base = parseFloat(getComputedStyle(nameEl).fontSize);
+    if (nameStacked()) { nameEl.style.setProperty('font-size', Math.round(base * 0.72) + 'px', 'important'); return; }
+    const lineH = parseFloat(getComputedStyle(nameEl).lineHeight);   // the short name's one line, exactly (no rounding, so nothing below moves)
+    const shortBase = nameBaseline(true);   // at full size the first line's baseline is exactly where the short name's sits
+    nameEl.style.whiteSpace = 'nowrap';
+    const w = nameEl.querySelector('.chars').getBoundingClientRect().width;
+    // the clear space between the save icon (left) and the chroma / sound controls (right), kept centred, with room for the button
+    const mid = innerWidth / 2; let half = innerWidth * 0.42;
+    document.querySelectorAll('.save, .toggles, .chroma-pick').forEach(el => { const r = el.getBoundingClientRect(); if (!r.width) return;
+      if (r.right < mid) half = Math.min(half, mid - r.right); else if (r.left > mid) half = Math.min(half, r.left - mid); });
+    const avail = Math.max(200, 2 * (half - 44) - 24);
+    const fs = base * Math.min(1, avail / w);
+    nameEl.style.setProperty('font-size', fs.toFixed(3) + 'px', 'important');
+    // same box height as the short name, with the smaller text pushed down so its baseline lands on the short name's baseline
+    Object.assign(nameEl.style, { boxSizing: 'border-box', height: lineH + 'px' });
+    nameEl.style.paddingTop = Math.max(0, shortBase - nameBaseline()).toFixed(3) + 'px';
+  }
+  function nameBaseline(first) {   // distance from the top of the title to its text baseline (first line, or last)
+    const mark = document.createElement('span'); mark.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline';
+    const ch = nameEl.querySelector('.chars'); if (first) ch.prepend(mark); else ch.appendChild(mark); const y = mark.getBoundingClientRect().top - nameEl.getBoundingClientRect().top; mark.remove();
+    return y;
+  }
+  function placeNameBtn() {
+    if (!nameBtn || !nameEl) return;
+    if (nameStacked()) { nameBtn.style.left = nameBtn.style.top = ''; return; }
+    const ir = nameBtn.offsetParent ? nameBtn.offsetParent.getBoundingClientRect() : { left: 0, top: 0 };
+    const cr = nameEl.querySelector('.chars').getBoundingClientRect();
+    nameBtn.style.left = Math.round(cr.right - ir.left + 10) + 'px';
+    // sit on the text's baseline, like a real ellipsis: a zero-height marker at the end of the name gives the baseline
+    const base = nameEl.getBoundingClientRect().top + nameBaseline();
+    nameBtn.style.top = Math.round(base - ir.top + 10) + 'px';   // the button's box runs 10px below the baseline, so the dots' bottom edge is on it
+  }
+  if (nameEl && nameBtn) {
+    let nameBusy = false;
+    nameBtn.addEventListener('click', () => {
+      if (nameBusy || nameStacked()) return; nameBusy = true;
+      nameFull = !nameFull;
+      nameBtn.innerHTML = nameFull ? NAME_BTN_LESS : NAME_BTN_MORE;
+      nameBtn.setAttribute('aria-expanded', String(nameFull));
+      nameBtn.setAttribute('aria-label', nameFull ? 'Show my short name' : 'Show my full name');
+      // fade the name out, swap it, then fade it back in
+      nameBtn.classList.add('swap');
+      nameEl.style.transition = 'opacity 120ms ease'; nameEl.style.opacity = '0';
+      setTimeout(() => {
+        nameEl.innerHTML = nameFull ? NAME_FULL : NAME_SHORT;
+        prepare(nameEl);   // letters split for the hover effect, but no scramble here: the name just fades back in
+        fitName(); placeNameBtn();
+        nameBtn.classList.remove('swap'); nameBusy = false;   // the button is back (at its new spot) as soon as the new name is in
+        nameEl.style.transition = 'opacity 320ms ease'; nameEl.style.opacity = '1';
+        setTimeout(() => nameEl.style.removeProperty('transition'), 340);
+      }, 130);
+    });
+    addEventListener('resize', () => { fitName(); placeNameBtn(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeNameBtn);
+    // hovering the name shows the dots (hidden again, after a moment, when the pointer leaves)
+    nameEl.addEventListener('pointerenter', () => { placeNameBtn(); nameBtn.classList.add('show'); });
+    nameEl.addEventListener('pointerleave', () => nameBtn.classList.remove('show'));
+    placeNameBtn();
+  }
   caption.addEventListener('pointerenter', () => decode(decoders.get(caption), 0, 'scramble'));
   function setCaption(text, animate) {
     const d = prepare(caption, text);
