@@ -40,7 +40,7 @@ if(m==='lite'||(m!=='full'&&safari&&!d.classList.contains('touch')))d.classList.
   *, *::before, *::after { box-sizing: border-box; }
   html { height: 100%; background: #000; scroll-padding-top: env(safe-area-inset-top, 0px); }
   body { height: 100%; margin: 0; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--type); font-synthesis: none; -webkit-font-smoothing: antialiased; }
-  button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+  button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: var(--cur-hand, pointer); }
   a { color: inherit; }
   :focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 3px; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -110,7 +110,7 @@ if(m==='lite'||(m!=='full'&&safari&&!d.classList.contains('touch')))d.classList.
   /* hovering a case: the whole window floats slowly up and down (stepped, like the eyes) */
   @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
   .cases .win.seen:hover { animation: float 2.4s steps(13) infinite; } /* only cases on the page float, never the full-screen one */
-  .cases .win { cursor: pointer; } /* the whole case opens full screen */
+  .cases .win { cursor: var(--cur-hand, pointer); } /* the whole case opens full screen */
   .win::after { transition: translate 270ms steps(3); }
   .cases .win:hover::after { translate: 2px 2px; }
   .win::before { content: ""; position: absolute; inset: 0; z-index: -1; background: #d9d4c8; border: 1px solid #1e1d1b; box-shadow: inset 1px 1px 0 #f4f1ea, inset -1px -1px 0 #8b867c; filter: var(--fxf); }
@@ -156,7 +156,7 @@ if(m==='lite'||(m!=='full'&&safari&&!d.classList.contains('touch')))d.classList.
   .modal-body { position: relative; z-index: 1; width: 100%; max-height: 100%; display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; } /* the window fits the screen, never wider */
   .modal { overflow: hidden; }
   .modal .win { width: min(1180px, 100%); max-height: 100%; overflow: visible; margin: 0; opacity: 1; filter: none; translate: 0 0; animation: pop 270ms steps(3) both; }
-  .modal .win { cursor: auto; }
+  .modal .win { cursor: var(--cur-arrow, auto); }
   .modal .strip.vertical { grid-template-columns: repeat(3, minmax(0, 330px)); }
   .modal .strip img { max-height: calc(100vh - 2 * var(--bezel) - 6vh - 290px); } /* leaves room for the bar, text and button */
   .modal .desc { font-size: 18px; }
@@ -335,12 +335,75 @@ if(m==='lite'||(m!=='full'&&safari&&!d.classList.contains('touch')))d.classList.
   html.taffy-peek body > :not(.paper):not(.tv):not(.bezel):not(.stage):not(script):not(style),
   html.taffy-peek .stage > :not(.paper) { opacity: 0 !important; pointer-events: none !important; }
   html.taffy-peek .paper::after { opacity: 1 !important; }
-  html.taffy-peek, html.taffy-peek * { cursor: default; user-select: none; -webkit-user-select: none; }
+  html.taffy-peek, html.taffy-peek * { cursor: var(--cur-arrow, default); user-select: none; -webkit-user-select: none; }
 </style>
 <script>/* lite and phones: take every SVG filter out of the stylesheets (CSS-only filters such as blur or brightness stay) */
 (function(){var c=document.documentElement.classList;if(!c.contains('lite')&&!c.contains('touch'))return;var re=/url\(\s*["']?#[^)]*\)/g;
 function walk(list){for(var i=0;i<list.length;i++){var r=list[i];if(r.style){var f=r.style.getPropertyValue('filter');if(f&&/url\(\s*["']?#/.test(f)){var n=f.replace(re,'').replace(/,\s*\)/g,')').trim();r.style.setProperty('filter',n||'none',r.style.getPropertyPriority('filter'));}}if(r.cssRules)walk(r.cssRules);}}
 for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].cssRules);}catch(e){}}})();</script>
+<style id="pixel-cursor">
+  /* desktop: small chunky pixel cursors (arrow, pointing hand, text beam) in the site's ink and beige, with a soft pixel shadow.
+     Phones and tablets keep their normal cursors: the --cur-* values only exist here, so every cursor rule falls back. */
+  @media (hover: hover) and (pointer: fine) {
+    html:not(.touch) {
+      --cur-arrow: -webkit-image-set(url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAYCAYAAADzoH0MAAAAxElEQVR4nK2SsQ3DIBBFD5QtEKxgyZ1XceaLV6FDYgUQlQuPQBpABzgO8eU6QPz/HjYoKSIQhgMAKCni3SBOaYfcfuwuHru7RVERWKN/1iErdAHW6EJCIhjV+b9CS/FNZ4jgSoes8Lg6nOal21NSROcDy2umpIjW6O7Syd6zDXM+bGSFiqBpep2RYXyA9IjTvHzEbEdJsXYBlGHp25Zm58OG2iJA/6BYg+MFvnw1Soo1q9AVBhvxL1zpDgWkkPL6WJWs8AYXXWLvCLb6ngAAAABJRU5ErkJggg==") 1x, url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAwCAYAAACfbhNRAAABBUlEQVR4nO2YSwqDMBiEY8ktRK8guPMq7fnaq3Qn9AqK52g3tYximoT4+BZ+q4jRDDN5kD8ri/xtvnT9kJkDuBwx6ByEiEzjUPaMBuEEQoTVh1f7/LWrutlt1SCcQIiwrhd7RoNwAiHCGYeydTQIJxAiguJQtogG4QRCRHQcylrRIJxAiEiKQ0mJBuEEQkRSHFXdePuE3GsQTiBETO4dOsMVtT2kjzHm5hu464fH2EY4gRDhjOOPvfel/op+e25WMUw2q9gZHkJZ5NexrStCQTiBEDEvkixG4LIxdqM7zw4fVi0KmckpuP6PcAIhYrWCh6sUaQJWHMIJhIhNSoO6CpTz7PDxAY4yb6KZ+alCAAAAAElFTkSuQmCC") 2x) 0 0, default;
+      --cur-hand: -webkit-image-set(url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAYCAYAAAD+vg1LAAAA0UlEQVR4nMWVQQrDIBBFx5JbDDNXKHTXq5jzJVfprtArKK666BHsojFMTaRGY/pBMGL+fF5GoyAhJvRhbqxTqX3ZYkLPhP71NPOQRXJ1qk5Sa8yEmgn17sYAMADAkIulGYoud+Pjfpvn58t1kTrunA7gu7W2KC4mzZuhUEzoo8qLNDkK7wF8sOyWWAZhQt0OxVTBx1VLJHD0/z/SRcbGOmWsU/LL1ir75P3SFKoPz8cwDjhqkRjrxmoUssXk+vHXZgkOY92YNA5X35bf0JqaoXgDSZNOJBvXMmMAAAAASUVORK5CYII=") 1x, url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAwCAYAAACFUvPfAAABG0lEQVR4nO2ZQQrCMBBFU/EWpb2C4M6r6Pn0Ku4KXqGl59BVy680kpRMzIP+1SAlffx+ZoZYuUi1Tf1e+70fxir2rK065HpRSiGhgz6pRuLVPVefOZ0vc20dFaTTSOijxaFtU1+nuh/GR+rzkU4joU3i4Zy7T0Xb1HOdqqsgnUZCm8TjxwBa3VtUIRFCOo2EXsTDt3ZaKCRCvqggnUZCV7Frp++ZVNJ3qTQqSKeR0Fa7x2Zp/DQquu4inUZCL5p3SCfJqa9OcpsKpNM7dC7t0Lm0GC4633VFLKGTqJBOI6GL2z18A0WFdBoJ7Y1HaZ1Eb1+RTiOhi+geIR1DhXQaCR0dD9+9hIV8/9cgnUZCB8VDB43eP/xLSKeR0B+1l06a0rclewAAAABJRU5ErkJggg==") 2x) 7 1, pointer;
+      --cur-text: -webkit-image-set(url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAWCAYAAAD0OH0aAAAAg0lEQVR4nGOUk5X+z4AEHj1+ysjAwMCASxxF8uK54wz6RpYM6GwGBoZoGIOJgUTAiMyRk5X+f/HccQYGBgaY6XCTHz1+uoxoG2CKyXLSqIZRDdTSwMDAAEnWcrLS/9+/fvQfGxtZLSO6AAMiDyxFFoRlUfJynJysdBS6xKPHT5dhEwcABi00SlDifUoAAAAASUVORK5CYII=") 1x, url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAtCAYAAAC0wKvmAAAAkElEQVR4nGOUk5X+z0AAPHr8lBHGJlU9EyHFlAKaW8CIzEH2/sVzx+Hi+kaWDITEGRgYorFZMMyCCBkQE1wMOILl0eOny2DsoR9ELNQyCDlYkMHQD6JRC0YtGLVg1IJRC0YtGLVg1IJRCyCAah0Q5H4ZMhgGQURMt5QBtaOxlJDi4d2NjSKkAbmjQYz6oR9EANFMLwcbyecwAAAAAElFTkSuQmCC") 2x) 5 10, text;
+    }
+    :where(html:not(.touch)), :where(html:not(.touch) body) { cursor: var(--cur-arrow); }   /* :where keeps these at zero specificity, so the site's own cursor rules still win */
+    :where(html:not(.touch)) :where(a[href], button:not(:disabled), [role="button"], [role="menuitem"], [role="menuitemradio"], summary, label[for], select,
+      input[type="range"], input[type="checkbox"], input[type="radio"], input[type="button"], input[type="submit"]) { cursor: var(--cur-hand); }
+    :where(html:not(.touch)) :where(input:not([type]), input[type="text"], input[type="search"], input[type="email"], textarea, [contenteditable="true"]) { cursor: var(--cur-text); }
+    /* low-framerate cursor: the real cursor turns invisible (each kind keeps its own hotspot so the script can tell them apart)
+       and a drawn copy follows it at a choppy, hand-animated framerate */
+    html.pixcur { --cur-arrow: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAC0lEQVR4nGNgQAcAABIAAXfx+gAAAAAASUVORK5CYII=") 0 0, none; --cur-hand: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAC0lEQVR4nGNgQAcAABIAAXfx+gAAAAAASUVORK5CYII=") 1 0, none; --cur-text: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAC0lEQVR4nGNgQAcAABIAAXfx+gAAAAAASUVORK5CYII=") 0 1, none; }
+    #pixcur { position: fixed; left: 0; top: 0; z-index: 2147483647; pointer-events: none; display: none;
+      background: no-repeat 0 0 / 100% 100%; image-rendering: pixelated; will-change: transform; }
+    html.pixcur #pixcur.on { display: block; }
+  }
+</style>
+<script>/* low-framerate pixel cursor (desktop): the drawn cursor only moves 36 times a second, like the rest of the site's stepped animation */
+(function(){
+  var CURSOR_FPS = 36;
+  var mq = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)'), root = document.documentElement;
+  if (!mq || root.classList.contains('touch')) return;
+  var IMG = { arrow: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAwCAYAAACfbhNRAAABBUlEQVR4nO2YSwqDMBiEY8ktRK8guPMq7fnaq3Qn9AqK52g3tYximoT4+BZ+q4jRDDN5kD8ri/xtvnT9kJkDuBwx6ByEiEzjUPaMBuEEQoTVh1f7/LWrutlt1SCcQIiwrhd7RoNwAiHCGYeydTQIJxAiguJQtogG4QRCRHQcylrRIJxAiEiKQ0mJBuEEQkRSHFXdePuE3GsQTiBETO4dOsMVtT2kjzHm5hu464fH2EY4gRDhjOOPvfel/op+e25WMUw2q9gZHkJZ5NexrStCQTiBEDEvkixG4LIxdqM7zw4fVi0KmckpuP6PcAIhYrWCh6sUaQJWHMIJhIhNSoO6CpTz7PDxAY4yb6KZ+alCAAAAAElFTkSuQmCC', hand: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAwCAYAAACFUvPfAAABG0lEQVR4nO2ZQQrCMBBFU/EWpb2C4M6r6Pn0Ku4KXqGl59BVy680kpRMzIP+1SAlffx+ZoZYuUi1Tf1e+70fxir2rK065HpRSiGhgz6pRuLVPVefOZ0vc20dFaTTSOijxaFtU1+nuh/GR+rzkU4joU3i4Zy7T0Xb1HOdqqsgnUZCm8TjxwBa3VtUIRFCOo2EXsTDt3ZaKCRCvqggnUZCV7Frp++ZVNJ3qTQqSKeR0Fa7x2Zp/DQquu4inUZCL5p3SCfJqa9OcpsKpNM7dC7t0Lm0GC4633VFLKGTqJBOI6GL2z18A0WFdBoJ7Y1HaZ1Eb1+RTiOhi+geIR1DhXQaCR0dD9+9hIV8/9cgnUZCB8VDB43eP/xLSKeR0B+1l06a0rclewAAAABJRU5ErkJggg==', text: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAtCAYAAAC0wKvmAAAAkElEQVR4nGOUk5X+z0AAPHr8lBHGJlU9EyHFlAKaW8CIzEH2/sVzx+Hi+kaWDITEGRgYorFZMMyCCBkQE1wMOILl0eOny2DsoR9ELNQyCDlYkMHQD6JRC0YtGLVg1IJRC0YtGLVg1IJRCyCAah0Q5H4ZMhgGQURMt5QBtaOxlJDi4d2NjSKkAbmjQYz6oR9EANFMLwcbyecwAAAAAElFTkSuQmCC' };
+  var GRID = { arrow: [11, 16, 0, 0], hand: [15, 16, 5, 0.5], text: [8, 15, 3.5, 7] };   // size and hotspot, in drawn pixels
+  var el = null, x = 0, y = 0, target = null, moved = false, kind = '', timer = null;
+  function px() { var d = window.devicePixelRatio || 1; return Math.max(1, Math.round(1.5 * d)) / d; }   // ~1.5 css px per drawn pixel, on whole device pixels
+  function kindOf(t) {
+    if (!t || t.nodeType !== 1 || t.tagName === 'IFRAME') return '';
+    var c = getComputedStyle(t).cursor || '';
+    if (c.indexOf('url(') < 0 || c.indexOf('none') < 0) return '';   // something with its own native cursor: let that show
+    return / 1 0,/.test(c) ? 'hand' : / 0 1,/.test(c) ? 'text' : 'arrow';
+  }
+  function paint() {
+    if (!moved || !el) return; moved = false;
+    var k = kindOf(target);
+    if (!k) { el.classList.remove('on'); return; }
+    var s = px(), g = GRID[k], d = window.devicePixelRatio || 1;
+    if (k !== kind) { kind = k; el.style.backgroundImage = 'url("' + IMG[k] + '")'; }
+    el.style.width = g[0] * s + 'px'; el.style.height = g[1] * s + 'px';
+    el.style.transform = 'translate(' + Math.round((x - g[2] * s) * d) / d + 'px,' + Math.round((y - g[3] * s) * d) / d + 'px)';
+    el.classList.add('on');
+  }
+  function start() {
+    if (el || !mq.matches || root.classList.contains('touch')) return;
+    el = document.createElement('div'); el.id = 'pixcur'; el.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(el); root.classList.add('pixcur');
+    timer = setInterval(paint, 1000 / CURSOR_FPS);
+  }
+  function hide() { if (el) el.classList.remove('on'); }
+  addEventListener('pointermove', function(e) { if (e.pointerType && e.pointerType !== 'mouse') return; x = e.clientX; y = e.clientY; target = e.target; moved = true; }, { passive: true });
+  addEventListener('pointerdown', function(e) { target = e.target; moved = true; }, { passive: true });
+  document.addEventListener('mouseleave', hide);
+  addEventListener('blur', hide);
+  addEventListener('scroll', function() { if (!el || !el.classList.contains('on')) return; target = document.elementFromPoint(x, y); moved = true; }, { passive: true, capture: true });
+  function stop() { if (!el) return; clearInterval(timer); el.remove(); el = null; kind = ''; root.classList.remove('pixcur'); }
+  if (document.body) start(); else document.addEventListener('DOMContentLoaded', start);
+  if (mq.addEventListener) mq.addEventListener('change', function() { mq.matches ? start() : stop(); });
+})();
+</script>
 </head>
 <body>
 <div class="fade in" aria-hidden="true"></div>
