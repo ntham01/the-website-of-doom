@@ -348,9 +348,10 @@ for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].
     /* low-framerate cursor: the real cursor turns invisible (each kind keeps its own hotspot so the script can tell them apart)
        and a drawn copy follows it at a choppy, hand-animated framerate */
     html.pixcur { --cur-arrow: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAC0lEQVR4nGNgQAcAABIAAXfx+gAAAAAASUVORK5CYII=") 0 0, none; --cur-hand: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAC0lEQVR4nGNgQAcAABIAAXfx+gAAAAAASUVORK5CYII=") 1 0, none; --cur-text: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAC0lEQVR4nGNgQAcAABIAAXfx+gAAAAAASUVORK5CYII=") 0 1, none; }
-    #pixcur { position: fixed; left: 0; top: 0; z-index: 2147483647; pointer-events: none; display: none;
-      background: no-repeat 0 0 / 100% 100%; image-rendering: pixelated; will-change: transform; opacity: 0.85; }   /* very slightly see-through */
-    html.pixcur #pixcur.on { display: block; }
+    #pixcur { position: fixed; left: 0; top: 0; z-index: 2147483647; pointer-events: none;
+      opacity: 0; transition: none;   /* when the mouse leaves the page, the cursor is gone at once */
+      background: no-repeat 0 0 / 100% 100%; image-rendering: pixelated; will-change: transform, opacity; }
+    html.pixcur #pixcur.on { opacity: 0.85; }   /* very slightly see-through; appears the moment the mouse comes in */
     /* Warm, Cool and Random: the cursor goes through the same colour filter as the page, so its light parts match the paper
        (Default and Taffy keep the plain beige-and-ink cursor) */
     html.pixcur:is([data-chroma="warm"], [data-chroma="cool"], [data-chroma="random"]) #pixcur { filter: var(--fx, none); }
@@ -363,7 +364,7 @@ for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].
   if (!mq || root.classList.contains('touch')) return;
   var IMG = { arrow: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAwCAYAAACfbhNRAAABBUlEQVR4nO2YSwqDMBiEY8ktRK8guPMq7fnaq3Qn9AqK52g3tYximoT4+BZ+q4jRDDN5kD8ri/xtvnT9kJkDuBwx6ByEiEzjUPaMBuEEQoTVh1f7/LWrutlt1SCcQIiwrhd7RoNwAiHCGYeydTQIJxAiguJQtogG4QRCRHQcylrRIJxAiEiKQ0mJBuEEQkRSHFXdePuE3GsQTiBETO4dOsMVtT2kjzHm5hu464fH2EY4gRDhjOOPvfel/op+e25WMUw2q9gZHkJZ5NexrStCQTiBEDEvkixG4LIxdqM7zw4fVi0KmckpuP6PcAIhYrWCh6sUaQJWHMIJhIhNSoO6CpTz7PDxAY4yb6KZ+alCAAAAAElFTkSuQmCC', hand: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAwCAYAAACFUvPfAAABG0lEQVR4nO2ZQQrCMBBFU/EWpb2C4M6r6Pn0Ku4KXqGl59BVy680kpRMzIP+1SAlffx+ZoZYuUi1Tf1e+70fxir2rK065HpRSiGhgz6pRuLVPVefOZ0vc20dFaTTSOijxaFtU1+nuh/GR+rzkU4joU3i4Zy7T0Xb1HOdqqsgnUZCm8TjxwBa3VtUIRFCOo2EXsTDt3ZaKCRCvqggnUZCV7Frp++ZVNJ3qTQqSKeR0Fa7x2Zp/DQquu4inUZCL5p3SCfJqa9OcpsKpNM7dC7t0Lm0GC4633VFLKGTqJBOI6GL2z18A0WFdBoJ7Y1HaZ1Eb1+RTiOhi+geIR1DhXQaCR0dD9+9hIV8/9cgnUZCB8VDB43eP/xLSKeR0B+1l06a0rclewAAAABJRU5ErkJggg==', text: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAtCAYAAAC0wKvmAAAAkElEQVR4nGOUk5X+z0AAPHr8lBHGJlU9EyHFlAKaW8CIzEH2/sVzx+Hi+kaWDITEGRgYorFZMMyCCBkQE1wMOILl0eOny2DsoR9ELNQyCDlYkMHQD6JRC0YtGLVg1IJRC0YtGLVg1IJRCyCAah0Q5H4ZMhgGQURMt5QBtaOxlJDi4d2NjSKkAbmjQYz6oR9EANFMLwcbyecwAAAAAElFTkSuQmCC' };
   var GRID = { arrow: [11, 16, 0, 0], hand: [15, 16, 5, 0.5], text: [8, 15, 3.5, 7] };   // size and hotspot, in drawn pixels
-  var el = null, x = 0, y = 0, target = null, moved = false, kind = '', timer = null;
+  var el = null, x = 0, y = 0, target = null, moved = false, inside = false, kind = '', timer = null, wx = 0, wy = 0, lt = 0, vx = 0, vy = 0;
   function px() { var d = window.devicePixelRatio || 1; return Math.max(1, Math.round(1.5 * d)) / d; }   // ~1.5 css px per drawn pixel, on whole device pixels
   function kindOf(t) {
     if (!t || t.nodeType !== 1 || t.tagName === 'IFRAME') return '';
@@ -373,6 +374,7 @@ for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].
   }
   function paint() {
     if (!moved || !el) return; moved = false;
+    if (!inside) return;   // only drawn while the mouse is actually over the page
     var k = kindOf(target);
     if (!k) { el.classList.remove('on'); return; }
     var s = px(), g = GRID[k], d = window.devicePixelRatio || 1;
@@ -385,13 +387,38 @@ for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].
     if (el || !mq.matches || root.classList.contains('touch')) return;
     el = document.createElement('div'); el.id = 'pixcur'; el.setAttribute('aria-hidden', 'true');
     document.body.appendChild(el); root.classList.add('pixcur');
-    timer = setInterval(paint, 1000 / CURSOR_FPS);
+    timer = setInterval(tick, 1000 / CURSOR_FPS);
   }
-  function hide() { if (el) el.classList.remove('on'); }
-  addEventListener('pointermove', function(e) { if (e.pointerType && e.pointerType !== 'mouse') return; x = e.clientX; y = e.clientY; target = e.target; moved = true; }, { passive: true });
+  function hide() { inside = false; moved = false; if (el) el.classList.remove('on'); }
+  // the browser window itself moved (being dragged) since the mouse last moved over the page: the mouse isn't on the page any more
+  function tick() {
+    if (el && inside) {
+      if (window.screenX !== wx || window.screenY !== wy) { hide(); return; }
+      // a quick flick off an edge (the top especially, into the tabs and address bar) doesn't always send a "left the page" event:
+      // if the mouse was heading out near an edge and then went quiet, it has left
+      if (performance.now() - lt > 40) {   // a moving mouse reports every ~8-16ms, so 40ms of quiet means it's gone
+        var nx = x + vx * 60, ny = y + vy * 60, near = x < 140 || y < 140 || x > innerWidth - 140 || y > innerHeight - 140;
+        if (near && (nx < 0 || ny < 0 || nx >= innerWidth || ny >= innerHeight)) { hide(); return; }
+      }
+    }
+    paint();
+  }
+  addEventListener('pointermove', function(e) {
+    if (e.pointerType && e.pointerType !== 'mouse') return;
+    if (e.clientX < 0 || e.clientY < 0 || e.clientX >= innerWidth || e.clientY >= innerHeight) { hide(); return; }   // dragged out past the edge
+    var now = performance.now(), dt = now - lt;
+    if (inside && dt > 0 && dt < 150) { vx = (e.clientX - x) / dt; vy = (e.clientY - y) / dt; } else { vx = vy = 0; }   // speed, in px per ms
+    lt = now; x = e.clientX; y = e.clientY; target = e.target; moved = true; inside = true; wx = window.screenX; wy = window.screenY;
+  }, { passive: true });
+  addEventListener('resize', hide);
   addEventListener('pointerdown', function(e) { target = e.target; moved = true; }, { passive: true });
+  // the mouse leaving the page (any of these may be the one a browser sends): fade the cursor out
   document.addEventListener('mouseleave', hide);
+  addEventListener('mouseout', function(e) { if (!e.relatedTarget) hide(); });
+  addEventListener('pointerout', function(e) { if (!e.relatedTarget) hide(); });
+  document.documentElement.addEventListener('pointerleave', hide);
   addEventListener('blur', hide);
+  document.addEventListener('visibilitychange', function() { if (document.hidden) hide(); });
   addEventListener('scroll', function() { if (!el || !el.classList.contains('on')) return; target = document.elementFromPoint(x, y); moved = true; }, { passive: true, capture: true });
   function stop() { if (!el) return; clearInterval(timer); el.remove(); el = null; kind = ''; root.classList.remove('pixcur'); }
   if (document.body) start(); else document.addEventListener('DOMContentLoaded', start);
