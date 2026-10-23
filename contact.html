@@ -455,8 +455,11 @@ for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].
        and a drawn copy follows it at a choppy, hand-animated framerate */
     html.pixcur { --cur-arrow: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAC0lEQVR4nGNgQAcAABIAAXfx+gAAAAAASUVORK5CYII=") 0 0, none; --cur-hand: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAC0lEQVR4nGNgQAcAABIAAXfx+gAAAAAASUVORK5CYII=") 1 0, none; --cur-text: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAC0lEQVR4nGNgQAcAABIAAXfx+gAAAAAASUVORK5CYII=") 0 1, none; }
     #pixcur { position: fixed; left: 0; top: 0; z-index: 2147483647; pointer-events: none; display: none;
-      background: no-repeat 0 0 / 100% 100%; image-rendering: pixelated; will-change: transform; }
+      background: no-repeat 0 0 / 100% 100%; image-rendering: pixelated; will-change: transform; opacity: 0.85; }   /* very slightly see-through */
     html.pixcur #pixcur.on { display: block; }
+    /* Warm, Cool and Random: the cursor goes through the same colour filter as the page, so its light parts match the paper
+       (Default and Taffy keep the plain beige-and-ink cursor) */
+    html.pixcur:is([data-chroma="warm"], [data-chroma="cool"], [data-chroma="random"]) #pixcur { filter: var(--fx, none); }
   }
 </style>
 <script>/* low-framerate pixel cursor (desktop): the drawn cursor only moves 36 times a second, like the rest of the site's stepped animation */
@@ -786,6 +789,7 @@ for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].
   function applyChroma(id, reroll = false) {
     const c = CHROMA.find(v => v.id === id) || CHROMA[0];
     document.documentElement.classList.toggle('taffy', !!c.taffy);   // Taffy chroma: the photo layer behind the page
+    document.documentElement.dataset.chroma = c.id;   // the drawn cursor takes on Warm / Cool / Random too
     const set = (el, k, v) => document.getElementById(el).setAttribute(k, v);
     document.documentElement.style.setProperty('--fx', `url(#${c.filter})`);
     if (c.filter === 'chroma') {
