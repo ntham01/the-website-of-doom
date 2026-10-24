@@ -502,6 +502,94 @@ for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].
   if (mq.addEventListener) mq.addEventListener('change', function() { mq.matches ? start() : stop(); });
 })();
 </script>
+<style id="ascii-bg-style">
+  /* faint ASCII lens on the page background (desktop): a light take on Canvas UI's Asciify. It sits just above the paper,
+     under everything else, and only shows in a soft circle around the mouse */
+  .ascii-bg { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; display: block; }
+  html.touch .ascii-bg { display: none; }
+</style>
+<script id="ascii-bg-script">/* ASCII lens: tune here */
+(function(){
+  var OPT = {
+    fps: 12,            // stepped, like the site's other animation
+    radius: 0.17,       // lens radius, as a fraction of the window height (clamped 110-200px)
+    maxAlpha: 0.13,     // how visible the characters get at the very centre (still light)
+    cellW: 7, cellH: 11, font: '600 9px ui-monospace, "SF Mono", Menlo, Consolas, monospace',
+    ramp: ' .:-=+*#%@',  // light -> dense
+    follow: 0.35        // how quickly the lens catches up with the mouse each frame (0-1)
+  };
+  var root = document.documentElement;
+  if (root.classList.contains('touch') || !window.matchMedia || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cv, cx, dpr = 1, W = 0, H = 0, tx = -1e4, ty = -1e4, lx = -1e4, ly = -1e4, s = 0, ts = 0, t = 0, timer = null, last = null, ink = '#000';
+  function hash(x, y) { var h = (x * 374761393 + y * 668265263) | 0; h = (h ^ (h >>> 13)) * 1274126177 | 0; return ((h ^ (h >>> 16)) >>> 0) / 4294967295; }
+  function noise(x, y) {   // smooth value noise
+    var xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+    var u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+    var a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
+    return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+  }
+  // the canvas isn't always the size of the window (on narrow screens the home page scrolls and the canvas grows with it),
+  // so it's sized from its own box, and the mouse is measured from that box's corner
+  function size() {
+    var b = cv.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2); W = Math.max(1, Math.round(b.width)); H = Math.max(1, Math.round(b.height));
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0); cx.font = OPT.font; cx.textBaseline = 'top'; last = null;
+  }
+  function frame() {
+    var b = cv.getBoundingClientRect();
+    if (Math.round(b.width) !== W || Math.round(b.height) !== H) size();
+    var mx = tx - b.left, my = ty - b.top;   // mouse, in the canvas's own coordinates
+    s += (ts - s) * (still ? 1 : 0.4);
+    if (lx < -1e3) { lx = mx; ly = my; }
+    var k = still ? 1 : OPT.follow; lx += (mx - lx) * k; ly += (my - ly) * k;
+    if (!still) t += 0.07;
+    if (last) cx.clearRect(last[0] - 2, last[1] - 2, last[2] + 4, last[3] + 4);
+    if (s < 0.01) { last = null; if (ts === 0) { clearInterval(timer); timer = null; } return; }
+    // lens radius: a little smaller on narrow windows
+    var R = Math.max(90, Math.min(200, innerHeight * OPT.radius, innerWidth * 0.16)), cw = OPT.cellW, ch = OPT.cellH, ramp = OPT.ramp, n = ramp.length - 1;
+    var c0 = Math.floor((lx - R) / cw), c1 = Math.ceil((lx + R) / cw), r0 = Math.floor((ly - R) / ch), r1 = Math.ceil((ly + R) / ch);
+    cx.fillStyle = ink;
+    for (var r = r0; r <= r1; r++) {
+      for (var c = c0; c <= c1; c++) {
+        var px = c * cw, py = r * ch, dx = px + cw / 2 - lx, dy = py + ch / 2 - ly, dd = Math.sqrt(dx * dx + dy * dy) / R;
+        if (dd >= 1) continue;
+        var f = 1 - dd; f = f * f * (3 - 2 * f) * s;                          // soft edge
+        var v = noise(c * 0.16 + t, r * 0.26 - t * 0.6) * 0.75 + hash(c, r + Math.floor(t * 3)) * 0.25;
+        var i = Math.min(n, Math.floor(v * (0.35 + 0.65 * f) * (n + 0.99) * 1.2));   // characters across the whole lens; the edge fades by opacity
+        if (i < 1) continue;
+        cx.globalAlpha = OPT.maxAlpha * Math.pow(f, 0.7);
+        cx.fillText(ramp[i], px, py);
+      }
+    }
+    cx.globalAlpha = 1;
+    last = [c0 * cw, r0 * ch, (c1 - c0 + 1) * cw, (r1 - r0 + 1) * ch];
+  }
+  function wake() { if (!timer && cv) timer = setInterval(frame, 1000 / OPT.fps); }
+  function leave() { ts = 0; wake(); }
+  function start() {
+    var paper = document.querySelector('.paper'); if (!paper || cv) return;
+    cv = document.createElement('canvas'); cv.className = 'ascii-bg'; cv.setAttribute('aria-hidden', 'true');
+    var z = getComputedStyle(paper).zIndex; if (z && z !== 'auto') cv.style.zIndex = z;
+    paper.insertAdjacentElement('afterend', cv); cx = cv.getContext('2d'); size();
+    ink = getComputedStyle(document.body).color || '#000';
+    addEventListener('resize', size);
+    addEventListener('pointermove', function(e) {
+      if (e.pointerType && e.pointerType !== 'mouse') return;
+      if (ts === 0) lx = -1e4;   // coming back in: start the lens at the mouse, not where it was left
+      tx = e.clientX; ty = e.clientY; ts = 1; wake();
+    }, { passive: true });
+    document.addEventListener('mouseleave', leave);
+    addEventListener('mouseout', function(e) { if (!e.relatedTarget) leave(); });
+    addEventListener('blur', leave);
+    document.addEventListener('visibilitychange', function() { if (document.hidden) leave(); });
+    // the ink colour follows dark screens / themes
+    new MutationObserver(function() { ink = getComputedStyle(document.body).color || ink; }).observe(root, { attributes: true, attributeFilter: ['class', 'style', 'data-theme', 'data-chroma'] });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
 </head>
 <body>
 <div class="fade in" aria-hidden="true"></div>
