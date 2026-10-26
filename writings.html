@@ -435,7 +435,7 @@ for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].
 (function(){
   var OPT = {
     fps: 12,            // stepped, like the site's other animation
-    radius: 0.17,       // lens radius, as a fraction of the window height (clamped 110-200px)
+    radius: 0.27,       // lens radius, as a fraction of the window height (clamped 130-320px)
     maxAlpha: 0.13,     // how visible the characters get at the very centre (still light)
     cellW: 7, cellH: 11, font: '600 9px ui-monospace, "SF Mono", Menlo, Consolas, monospace',
     ramp: ' .:-=+*#%@',  // light -> dense
@@ -471,7 +471,7 @@ for(var k=0;k<document.styleSheets.length;k++){try{walk(document.styleSheets[k].
     if (last) cx.clearRect(last[0] - 2, last[1] - 2, last[2] + 4, last[3] + 4);
     if (s < 0.01) { last = null; if (ts === 0) { clearInterval(timer); timer = null; } return; }
     // lens radius: a little smaller on narrow windows
-    var R = Math.max(90, Math.min(200, innerHeight * OPT.radius, innerWidth * 0.16)), cw = OPT.cellW, ch = OPT.cellH, ramp = OPT.ramp, n = ramp.length - 1;
+    var R = Math.max(130, Math.min(320, innerHeight * OPT.radius, innerWidth * 0.24)), cw = OPT.cellW, ch = OPT.cellH, ramp = OPT.ramp, n = ramp.length - 1;
     var c0 = Math.floor((lx - R) / cw), c1 = Math.ceil((lx + R) / cw), r0 = Math.floor((ly - R) / ch), r1 = Math.ceil((ly + R) / ch);
     cx.fillStyle = ink;
     for (var r = r0; r <= r1; r++) {
